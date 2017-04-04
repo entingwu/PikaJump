@@ -30,13 +30,15 @@ public class GameView extends SurfaceView implements Runnable {
     private long timeThisFrame;
     private boolean isJumping = false;
     private float jumpSpeedPerSecond = 100;
-    private float xPosition = 1000;
-    private float yPosition = 800;
+    private int mWidth = this.getResources().getDisplayMetrics().widthPixels;
+    private int mHeight = this.getResources().getDisplayMetrics().heightPixels;
+    private float xPosition = 10;
+    private float yPosition = 10;
 
-    private int frameWidth = 192;
-    private int frameHeight = 192;
-    private int frameCount = 55;
-    private int currentFrame = 1;
+    private int frameWidth = 384;
+    private int frameHeight = 384;
+    private int frameCount = 8;
+    private int currentFrame = 0;
     // Time that last frame has changed
     private long lastFrameChangeTime = 0;
     private int frameLengthInMilliseconds = 100;
@@ -50,7 +52,7 @@ public class GameView extends SurfaceView implements Runnable {
         super(context);
         surfaceHolder = getHolder();
         paint = new Paint();
-        bitmapPika = BitmapFactory.decodeResource(getResources(), R.drawable.pikachu_sprite);
+        bitmapPika = BitmapFactory.decodeResource(getResources(), R.drawable.pika_sprite_8_384);
         bitmapPika = Bitmap.createScaledBitmap(bitmapPika, frameWidth * frameCount, frameHeight, false);
     }
 
@@ -74,7 +76,7 @@ public class GameView extends SurfaceView implements Runnable {
     public void update() {
         // Move to the right place
         if (isJumping) {
-            if (currentFrame < 26) {
+            if (currentFrame < 4) {
                 yPosition = yPosition - (jumpSpeedPerSecond / fps);
             } else {
                 yPosition = yPosition + (jumpSpeedPerSecond / fps);
@@ -87,7 +89,7 @@ public class GameView extends SurfaceView implements Runnable {
             // Lock the canvas ready to draw
             canvas = surfaceHolder.lockCanvas();
             // Background
-            Drawable d = getResources().getDrawable(R.drawable.background_3);
+            Drawable d = getResources().getDrawable(R.drawable.background_1);
             d.setBounds(getLeft(), getTop(), getRight(), getBottom());
             d.draw(canvas);
             paint.setColor(Color.argb(255, 249, 129, 0));
