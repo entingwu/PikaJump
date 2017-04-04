@@ -29,14 +29,14 @@ public class GameView extends SurfaceView implements Runnable {
     private long fps;
     private long timeThisFrame;
     private boolean isJumping = false;
-    private float jumpSpeedPerSecond = 200;
-    private float xPosition = 100;
-    private float yPosition = 100;
+    private float jumpSpeedPerSecond = 100;
+    private float xPosition = 1000;
+    private float yPosition = 800;
 
     private int frameWidth = 192;
     private int frameHeight = 192;
     private int frameCount = 55;
-    private int currentFrame = 0;
+    private int currentFrame = 1;
     // Time that last frame has changed
     private long lastFrameChangeTime = 0;
     private int frameLengthInMilliseconds = 100;
@@ -74,7 +74,11 @@ public class GameView extends SurfaceView implements Runnable {
     public void update() {
         // Move to the right place
         if (isJumping) {
-            yPosition = yPosition + (jumpSpeedPerSecond / fps);
+            if (currentFrame < 26) {
+                yPosition = yPosition - (jumpSpeedPerSecond / fps);
+            } else {
+                yPosition = yPosition + (jumpSpeedPerSecond / fps);
+            }
         }
     }
 
@@ -83,15 +87,16 @@ public class GameView extends SurfaceView implements Runnable {
             // Lock the canvas ready to draw
             canvas = surfaceHolder.lockCanvas();
             // Background
-            Drawable d = getResources().getDrawable(R.drawable.background_1);
+            Drawable d = getResources().getDrawable(R.drawable.background_3);
             d.setBounds(getLeft(), getTop(), getRight(), getBottom());
             d.draw(canvas);
             paint.setColor(Color.argb(255, 249, 129, 0));
-            paint.setTextSize(100);
+            paint.setTextSize(80);
             canvas.drawText("FPS:" + fps, 100, 200, paint);
-
             whereToDraw.set(xPosition, (int)yPosition, xPosition + frameWidth, (int)yPosition + frameHeight);
+
             // Update frameToDraw
+            Log.i(TAG, "@" + whereToDraw.toString());
             getCurrentFrame();
             canvas.drawBitmap(bitmapPika, frameToDraw, whereToDraw, paint);
             surfaceHolder.unlockCanvasAndPost(canvas);
