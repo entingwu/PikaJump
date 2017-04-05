@@ -1,6 +1,7 @@
 package edu.neu.madcourse.pikachujump;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Paint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -30,8 +32,18 @@ public class GameView extends SurfaceView implements Runnable {
     private long timeThisFrame;
     private boolean isJumping = false;
     private float jumpSpeedPerSecond = 100;
-    private float xPosition = 1000;
-    private float yPosition = 800;
+
+
+    //get start point width and height
+
+    int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+    int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+
+    private float xPosition = width / 2;
+    private float yPosition = height / 2;
+
+//    private float xPosition = 1000;
+//    private float yPosition = 800;
 
     private int frameWidth = 192;
     private int frameHeight = 192;
@@ -52,6 +64,7 @@ public class GameView extends SurfaceView implements Runnable {
         paint = new Paint();
         bitmapPika = BitmapFactory.decodeResource(getResources(), R.drawable.pikachu_sprite);
         bitmapPika = Bitmap.createScaledBitmap(bitmapPika, frameWidth * frameCount, frameHeight, false);
+        System.out.println(height + "I am here" + width);
     }
 
     @Override
