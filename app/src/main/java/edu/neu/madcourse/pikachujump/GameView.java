@@ -31,8 +31,7 @@ public class GameView extends SurfaceView implements Runnable {
     private long fps;
     private long timeThisFrame;
     private boolean isJumping = false;
-    private float jumpSpeedPerSecond = 100;
-
+    private float jumpSpeedPerSecond = 200;
     private int mWidth = this.getResources().getDisplayMetrics().widthPixels;
     private int mHeight = this.getResources().getDisplayMetrics().heightPixels;
     private float xPosition = 10;
@@ -45,7 +44,7 @@ public class GameView extends SurfaceView implements Runnable {
     private int currentFrame = 0;
     // Time that last frame has changed
     private long lastFrameChangeTime = 0;
-    private int frameLengthInMilliseconds = 100;
+    private int frameLengthInMilliseconds = 200;
 
     // A rectangle to define an area of the sprite sheet that represents 1 frame
     private Rect frameToDraw = new Rect(0, 0, frameWidth, frameHeight);
@@ -80,7 +79,7 @@ public class GameView extends SurfaceView implements Runnable {
     public void update() {
         // Move to the right place
         if (isJumping) {
-            if (currentFrame < 4) {
+            if (currentFrame <= 3) {
                 yPosition = yPosition - (jumpSpeedPerSecond / fps);
             } else {
                 yPosition = yPosition + (jumpSpeedPerSecond / fps);
@@ -97,7 +96,7 @@ public class GameView extends SurfaceView implements Runnable {
             d.setBounds(getLeft(), getTop(), getRight(), getBottom());
             d.draw(canvas);
             paint.setColor(Color.argb(255, 249, 129, 0));
-            paint.setTextSize(80);
+            paint.setTextSize(50);
             canvas.drawText("FPS:" + fps, 100, 200, paint);
             whereToDraw.set(xPosition, (int)yPosition, xPosition + frameWidth, (int)yPosition + frameHeight);
 
