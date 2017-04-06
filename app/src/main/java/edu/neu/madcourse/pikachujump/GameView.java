@@ -1,7 +1,6 @@
 package edu.neu.madcourse.pikachujump;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Paint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,9 +9,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -34,8 +31,8 @@ public class GameView extends SurfaceView implements Runnable {
     private float jumpSpeedPerSecond = 200;
     private int mWidth = this.getResources().getDisplayMetrics().widthPixels;
     private int mHeight = this.getResources().getDisplayMetrics().heightPixels;
-    private float xPosition = 10;
-    private float yPosition = 10;
+    private float xPosition = mWidth / 2;
+    private float yPosition = mHeight / 2;
 
 
     private int frameWidth = 384;
@@ -79,9 +76,11 @@ public class GameView extends SurfaceView implements Runnable {
     public void update() {
         // Move to the right place
         if (isJumping) {
-            if (currentFrame <= 3) {
+            if (currentFrame >= 0 && currentFrame <= 3) {
+                Log.i(TAG, "currentFrame: " + currentFrame + ", yPos: " + yPosition);
                 yPosition = yPosition - (jumpSpeedPerSecond / fps);
-            } else {
+            } else if (currentFrame < 7) {
+                Log.i(TAG, "currentFrame: " + currentFrame + ", yPos: " + yPosition);
                 yPosition = yPosition + (jumpSpeedPerSecond / fps);
             }
         }
@@ -112,10 +111,12 @@ public class GameView extends SurfaceView implements Runnable {
         long time = System.currentTimeMillis();
         if (isJumping) {
             if (time > lastFrameChangeTime + frameLengthInMilliseconds) {
+                Log.i(TAG, "currentFrame: " + currentFrame);
                 lastFrameChangeTime = time;
                 currentFrame++;
                 if (currentFrame >= frameCount) {
                     currentFrame = 0;
+                    isJumping = false;
                 }
             }
         }
@@ -140,18 +141,8 @@ public class GameView extends SurfaceView implements Runnable {
         gameThread.start();
     }
 
-    /** The SurfaceView class implements onTouchListener
-     *  So we can override this method and detect screen touches. */
-    @Override
-    public boolean onTouchEvent(MotionEvent motionEvent) {
-        switch(motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_DOWN:
-                isJumping = true;
-                break;
-            case MotionEvent.ACTION_UP:
-                isJumping = false;
-                break;
-        }
-        return true;
+    public void setJumpTrue() {
+        Log.i(TAG,"Pikachu Jump Up.");
+        isJumping = true;
     }
 }

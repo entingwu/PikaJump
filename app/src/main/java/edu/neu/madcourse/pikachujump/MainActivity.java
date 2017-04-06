@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-        Intent intent = new Intent(this, edu.neu.madcourse.pikachujump.SpriteAnimation.class);
+        Intent intent = new Intent(this, SensorActivity.class);
         startActivity(intent);
     }
 }
