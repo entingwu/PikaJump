@@ -10,10 +10,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.util.Log;
 
-public class SensorActivity extends Activity implements SensorEventListener{
+public class SensorActivity extends Activity implements SensorEventListener {
 
     public static final String TAG = "SensorActivity";
-    private static final float threshold = SensorManager.GRAVITY_EARTH;
+    private static final float threshold = 5;
     public GameView gameView;
     private SensorManager mSensorManager;
 
@@ -25,6 +25,7 @@ public class SensorActivity extends Activity implements SensorEventListener{
         super.onCreate(savedInstanceState);
         gameView = new GameView(this);
         setContentView(gameView);
+
         Log.i(TAG, "Initialize Sensor Manager");
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
     }
@@ -41,7 +42,7 @@ public class SensorActivity extends Activity implements SensorEventListener{
             float accelerationSquareRoot =
                     (x * x + y * y + z * z) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
             Log.i(TAG, String.valueOf(accelerationSquareRoot));
-            if (accelerationSquareRoot >= threshold && y >= SensorManager.GRAVITY_EARTH) {
+            if (accelerationSquareRoot >= threshold && Math.abs(y) >= threshold) {
                 gameView.setJumpTrue();
                 return;
             }

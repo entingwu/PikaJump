@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">MAD17S_PikaJump</string>
+
+    <string name="title_game">Pikachu Jump</string>
+    <string name="instruction_label">Instruction</string>
+    <string name="score_label">Scores</string>
+    <string name="continue_label">Continue</string>
+    <string name="new_game_label">New Game</string>
+    <string name="leader_board_label">Leader Board</string>
+    <string name="button_label_acknowledgement">Acknowledgment</string>
 </resources>

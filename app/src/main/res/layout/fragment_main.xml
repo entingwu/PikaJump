@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/menu_margin"
+    android:background="#88000000"
+    android:elevation="@dimen/elevation_high"
+    android:orientation="vertical"
+    android:padding="@dimen/menu_button_padding"
+    tools:context="edu.neu.madcourse.pikachujump.MainFragment">
+
+    <Button
+        android:id="@+id/continue_button"
+        android:text="@string/continue_label"
+        style="@style/MenuButtonStyle"/>
+
+    <Button
+        android:id="@+id/new_button"
+        android:text="@string/new_game_label"
+        style="@style/MenuButtonStyle"/>
+
+    <Button
+        android:id="@+id/score_button"
+        android:text="@string/score_label"
+        style="@style/MenuButtonStyle"/>
+
+</LinearLayout>

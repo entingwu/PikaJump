@@ -28,12 +28,12 @@ public class GameView extends SurfaceView implements Runnable {
     private long fps;
     private long timeThisFrame;
     private boolean isJumping = false;
-    private float jumpSpeedPerSecond = 200;
-    private int mWidth = this.getResources().getDisplayMetrics().widthPixels;
-    private int mHeight = this.getResources().getDisplayMetrics().heightPixels;
-    private float xPosition = mWidth / 2;
-    private float yPosition = mHeight / 2;
-
+    // Jump Speed Per Second
+    private float mVelY = 300;
+    private int mWidth;
+    private int mHeight;
+    private float mPosX;
+    private float mPosY;
 
     private int frameWidth = 384;
     private int frameHeight = 384;
@@ -46,12 +46,17 @@ public class GameView extends SurfaceView implements Runnable {
     // A rectangle to define an area of the sprite sheet that represents 1 frame
     private Rect frameToDraw = new Rect(0, 0, frameWidth, frameHeight);
     // A rect that defines an area of the screen on which to draw
-    RectF whereToDraw = new RectF(xPosition, yPosition, xPosition + frameWidth, yPosition + frameHeight);
+    RectF whereToDraw = new RectF(mPosX, mPosY, mPosX + frameWidth, mPosY + frameHeight);
 
     public GameView(Context context) {
         super(context);
         surfaceHolder = getHolder();
         paint = new Paint();
+        mWidth = this.getResources().getDisplayMetrics().widthPixels;
+        mHeight = this.getResources().getDisplayMetrics().heightPixels;
+        mPosX = mWidth / 2;
+        mPosY = mHeight / 2;
+        Log.i(TAG, "Width" + mWidth + ", Height" + mHeight);
         bitmapPika = BitmapFactory.decodeResource(getResources(), R.drawable.pika_sprite_8_384);
         bitmapPika = Bitmap.createScaledBitmap(bitmapPika, frameWidth * frameCount, frameHeight, false);
     }
@@ -77,12 +82,13 @@ public class GameView extends SurfaceView implements Runnable {
         // Move to the right place
         if (isJumping) {
             if (currentFrame >= 0 && currentFrame <= 3) {
-                Log.i(TAG, "currentFrame: " + currentFrame + ", yPos: " + yPosition);
-                yPosition = yPosition - (jumpSpeedPerSecond / fps);
+                Log.i(TAG, "currentFrame: " + currentFrame + ", yPos: " + mPosY);
+                mPosY = mPosY - (mVelY / fps);
             } else if (currentFrame < 7) {
-                Log.i(TAG, "currentFrame: " + currentFrame + ", yPos: " + yPosition);
-                yPosition = yPosition + (jumpSpeedPerSecond / fps);
+                Log.i(TAG, "currentFrame: " + currentFrame + ", yPos: " + mPosY);
+                mPosY = mPosY + (mVelY / fps);
             }
+            resolveCollisionWithBounds();
         }
     }
 
@@ -96,8 +102,7 @@ public class GameView extends SurfaceView implements Runnable {
             d.draw(canvas);
             paint.setColor(Color.argb(255, 249, 129, 0));
             paint.setTextSize(50);
-            canvas.drawText("FPS:" + fps, 100, 200, paint);
-            whereToDraw.set(xPosition, (int)yPosition, xPosition + frameWidth, (int)yPosition + frameHeight);
+            whereToDraw.set(mPosX, (int)mPosY, mPosX + frameWidth, (int)mPosY + frameHeight);
 
             // Update frameToDraw
             Log.i(TAG, "@" + whereToDraw.toString());
@@ -144,5 +149,24 @@ public class GameView extends SurfaceView implements Runnable {
     public void setJumpTrue() {
         Log.i(TAG,"Pikachu Jump Up.");
         isJumping = true;
+    }
+
+    public void resolveCollisionWithBounds() {
+        final float xmax = mWidth;
+        final float ymax = mHeight;
+        final float x = mPosX;
+        final float y = mPosY;
+        if (x > xmax) {
+            mPosX = xmax;
+        } else if (x < -xmax) {
+            mPosX = - xmax;
+        }
+        if (y > ymax) {
+            mPosY = ymax;
+            mVelY = 0;
+        } else if (y < -ymax) {
+            mPosY = - ymax;
+            mVelY = 0;
+        }
     }
 }
