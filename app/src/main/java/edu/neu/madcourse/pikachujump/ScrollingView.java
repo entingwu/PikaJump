@@ -9,7 +9,7 @@ import android.view.View;
 
 public class ScrollingView extends View {
 
-    private static final int mVelocity = 1;
+    private static final float mVelocity = 1;
     private Drawable mBackground;
     private int mScrollPos;
 

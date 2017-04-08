@@ -22,19 +22,28 @@
         android:orientation="vertical"
         android:weightSum="1">
 
-            <fragment
-                android:id="@+id/main_fragment"
-                class="edu.neu.madcourse.pikachujump.MainFragment"
-                android:layout_width="@dimen/menu_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                tools:layout="@layout/fragment_main" />
+        <ImageView
+            android:id="@+id/title_image"
+            android:layout_width="250dp"
+            android:layout_height="150dp"
+            android:src="@drawable/title_pika"
+            android:contentDescription="@string/title_game"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="35dp" />
 
-            <Button
-                android:background="@drawable/mute"
-                android:layout_width="@dimen/menu_icon_width"
-                android:layout_height="@dimen/menu_icon_width"
-                android:id="@+id/mute_button" />
+        <fragment
+            android:id="@+id/main_fragment"
+            class="edu.neu.madcourse.pikachujump.MainFragment"
+            android:layout_width="@dimen/menu_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:layout="@layout/fragment_main" />
+
+        <Button
+            android:background="@drawable/mute"
+            android:layout_width="@dimen/menu_icon_width"
+            android:layout_height="@dimen/menu_icon_width"
+            android:id="@+id/mute_button" />
 
     </LinearLayout>
 </FrameLayout>

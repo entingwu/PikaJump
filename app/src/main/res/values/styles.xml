@@ -13,8 +13,9 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">@dimen/menu_button_margin</item>
         <item name="android:padding">@dimen/menu_button_padding</item>
-        <item name="android:background">#88000000</item>
-        <item name="android:textColor">@color/colorPrimaryLight</item>
+        <!--<item name="android:background">#88000000</item>-->
+        <item name="android:background">@color/orange_color</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textAllCaps">true</item>
     </style>
 
