@@ -24,7 +24,7 @@ public class MainFragment extends Fragment {
         newButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), SensorActivity.class);
+                Intent intent = new Intent(getActivity(), GameActivity.class);
                 startActivity(intent);
             }
         });

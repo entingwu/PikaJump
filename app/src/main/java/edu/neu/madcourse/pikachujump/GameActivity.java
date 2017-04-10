@@ -10,9 +10,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.util.Log;
 
-public class SensorActivity extends Activity implements SensorEventListener {
+public class GameActivity extends Activity implements SensorEventListener {
 
-    public static final String TAG = "SensorActivity";
+    public static final String TAG = "GameActivity";
     private static final float threshold = 5;
     public GameView gameView;
     private SensorManager mSensorManager;
