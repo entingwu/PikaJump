@@ -8,32 +8,64 @@ public class Pikachu {
     private float mPosX;
     private float mPosY;
 
+    // Frames per second
+    private long fps;
+    private int currentFrame = 0;
+
     // Jump Speed Per Second
     private float mVelY = 350;
-    private int frameWidth = 384;
-    private int frameHeight = 384;
+    private boolean isJumping = false;
 
-    public Pikachu() {
-        pikachu = new RectF();
+    public Pikachu(float x, float y) {
+        this.pikachu = new RectF();
+        this.mPosX = x;
+        this.mPosY = y;
     }
 
-    public RectF getPikachu() {
-        return pikachu;
+    public void update() {
+        // Move to the right place
+        if (isJumping) {
+            if (currentFrame >= 0 && currentFrame <= 3) {
+                this.mPosY = this.mPosY - mVelY / fps;
+            } else if (currentFrame < 7) {
+                this.mPosY = this.mPosY + mVelY / fps;
+            }
+        }
     }
 
-    public float getmPosX() {
+    public float getPosX() {
         return mPosX;
     }
 
-    public void setmPosX(float mPosX) {
+    public void setPosX(float mPosX) {
         this.mPosX = mPosX;
     }
 
-    public float getmPosY() {
+    public float getPosY() {
         return mPosY;
     }
 
-    public void setmPosY(float mPosY) {
+    public void setPosY(float mPosY) {
         this.mPosY = mPosY;
+    }
+
+    public boolean isJumping() {
+        return isJumping;
+    }
+
+    public void setJumping(boolean jumping) {
+        isJumping = jumping;
+    }
+
+    public void setFps(long fps) {
+        this.fps = fps;
+    }
+
+    public int getCurrentFrame() {
+        return currentFrame;
+    }
+
+    public void setCurrentFrame(int currentFrame) {
+        this.currentFrame = currentFrame;
     }
 }
