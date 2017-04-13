@@ -28,6 +28,16 @@ public class MainFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        continueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), GameActivity.class);
+                intent.putExtra(GameActivity.KEY_RESTORE, true);
+                startActivity(intent);
+            }
+        });
+
         // Inflate the layout for this fragment
         return rootView;
     }

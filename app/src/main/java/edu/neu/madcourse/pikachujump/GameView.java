@@ -6,10 +6,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.view.Display;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -23,17 +26,29 @@ public class GameView extends SurfaceView implements Runnable {
     private Canvas canvas;
     private Paint paint;
     private Bitmap bitmapPika;
+    private Bitmap apple;
+    private Bitmap banana;
+    private Bitmap coke;
+    // Game is paused at the start
+    private boolean paused;
 
     // Frames per second
     private long fps;
     private long timeThisFrame;
     private boolean isJumping = false;
     // Jump Speed Per Second
-    private float mVelY = 300;
+    private float mVelY = 350;
+
+    // The size of the screen in pixels
     private int mWidth;
     private int mHeight;
     private float mPosX;
     private float mPosY;
+
+    // Fruit array
+    private Fruit[] fruits = new Fruit[300];
+    private int numFruits = 0;
+    private int score = 0;
 
     private int frameWidth = 384;
     private int frameHeight = 384;
@@ -46,19 +61,43 @@ public class GameView extends SurfaceView implements Runnable {
     // A rectangle to define an area of the sprite sheet that represents 1 frame
     private Rect frameToDraw = new Rect(0, 0, frameWidth, frameHeight);
     // A rect that defines an area of the screen on which to draw
-    RectF whereToDraw = new RectF(mPosX, mPosY, mPosX + frameWidth, mPosY + frameHeight);
+    RectF whereToDraw = new RectF(mPosX - frameWidth/2, (int)mPosY - frameHeight/2,
+            mPosX + frameWidth/2, (int)mPosY + frameHeight/2);
 
     public GameView(Context context) {
         super(context);
         surfaceHolder = getHolder();
+
+        // Get a Display object to access screen details
+        Display display = ((GameActivity)context).getWindowManager().getDefaultDisplay();
         paint = new Paint();
-        mWidth = this.getResources().getDisplayMetrics().widthPixels;
-        mHeight = this.getResources().getDisplayMetrics().heightPixels;
+        Point size = new Point();
+        display.getSize(size);
+        mWidth = size.x;
+        mHeight = size.y;
         mPosX = mWidth / 2;
         mPosY = mHeight / 2;
-        Log.i(TAG, "Width" + mWidth + ", Height" + mHeight);
+
         bitmapPika = BitmapFactory.decodeResource(getResources(), R.drawable.pika_sprite_8_384);
         bitmapPika = Bitmap.createScaledBitmap(bitmapPika, frameWidth * frameCount, frameHeight, false);
+        apple = BitmapFactory.decodeResource(getResources(), R.drawable.apple);
+        banana = BitmapFactory.decodeResource(getResources(), R.drawable.banana);
+        coke = BitmapFactory.decodeResource(getResources(), R.drawable.coke);
+        createFruitsAndRestart();
+    }
+
+    public void createFruitsAndRestart() {
+        int fruitWidth = mWidth / 13;
+        int fruitHeight = mHeight / 10;
+
+        numFruits = 0;
+        for (int column = 0; column < 13; column++) {
+            for (int row = 0; row < 4; row++) {
+                fruits[numFruits] = new Fruit(row, column, fruitWidth, fruitHeight);
+                numFruits++;
+            }
+        }
+        Log.i(TAG, String.valueOf(fruits.length));
     }
 
     @Override
@@ -67,7 +106,10 @@ public class GameView extends SurfaceView implements Runnable {
             // Curr Time
             long startFrameTime = System.currentTimeMillis();
             // Update the frame
-            update();
+            if (!paused) {
+                update();
+            }
+
             // Draw the frame
             draw();
             timeThisFrame = System.currentTimeMillis() - startFrameTime;
@@ -79,16 +121,28 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void update() {
+        updatePikachu();
+        // Check if pikachu eats a fruit
+        for (int i = 0; i  < numFruits; ++i) {
+            Fruit fruit = fruits[i];
+            RectF pikachu = new RectF(mPosX - 30, mPosY - 50, mPosX + 30, mPosY + 50);
+            if(RectF.intersects(pikachu, fruit.getFruit())) {
+                if(fruit.getVisibility()){
+                    fruit.setInvisible();
+                    score = score + 10;
+                }
+            }
+        }
+    }
+
+    public void updatePikachu() {
         // Move to the right place
         if (isJumping) {
             if (currentFrame >= 0 && currentFrame <= 3) {
-                Log.i(TAG, "currentFrame: " + currentFrame + ", yPos: " + mPosY);
                 mPosY = mPosY - (mVelY / fps);
             } else if (currentFrame < 7) {
-                Log.i(TAG, "currentFrame: " + currentFrame + ", yPos: " + mPosY);
                 mPosY = mPosY + (mVelY / fps);
             }
-            resolveCollisionWithBounds();
         }
     }
 
@@ -100,12 +154,25 @@ public class GameView extends SurfaceView implements Runnable {
             Drawable d = getResources().getDrawable(R.drawable.background_1);
             d.setBounds(getLeft(), getTop(), getRight(), getBottom());
             d.draw(canvas);
-            paint.setColor(Color.argb(255, 249, 129, 0));
-            paint.setTextSize(50);
-            whereToDraw.set(mPosX, (int)mPosY, mPosX + frameWidth, (int)mPosY + frameHeight);
+            paint.setColor(Color.argb(255, 255, 255, 255));
+
+            // Draw the pikachu
+            whereToDraw.set(mPosX - frameWidth/2, (int)mPosY - frameHeight/2,
+                    mPosX + frameWidth/2, (int)mPosY + frameHeight/2);
+
+            // Draw the visible fruits
+            for (int i = 0; i < numFruits; i++) {
+                if (fruits[i].getVisibility()) {
+                    canvas.drawBitmap(apple, null, fruits[i].getFruit(), paint);
+                    //canvas.drawRect(fruits[i].getFruit(), paint);
+                }
+            }
+
+            // Draw the score
+            paint.setTextSize(30);
+            canvas.drawText("Score: " + score, 3, mHeight - 3, paint);
 
             // Update frameToDraw
-            Log.i(TAG, "@" + whereToDraw.toString());
             getCurrentFrame();
             canvas.drawBitmap(bitmapPika, frameToDraw, whereToDraw, paint);
             surfaceHolder.unlockCanvasAndPost(canvas);
@@ -130,6 +197,19 @@ public class GameView extends SurfaceView implements Runnable {
         frameToDraw.right = frameToDraw.left + frameWidth;
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+        switch(motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN:
+                paused = true;
+                break;
+            case MotionEvent.ACTION_UP:
+                paused = false;
+                break;
+        }
+        return true;
+    }
+
     public void pause() {
         playGame = false;
         try {
@@ -151,22 +231,13 @@ public class GameView extends SurfaceView implements Runnable {
         isJumping = true;
     }
 
-    public void resolveCollisionWithBounds() {
-        final float xmax = mWidth;
-        final float ymax = mHeight;
-        final float x = mPosX;
-        final float y = mPosY;
-        if (x > xmax) {
-            mPosX = xmax;
-        } else if (x < -xmax) {
-            mPosX = - xmax;
-        }
-        if (y > ymax) {
-            mPosY = ymax;
-            mVelY = 0;
-        } else if (y < -ymax) {
-            mPosY = - ymax;
-            mVelY = 0;
-        }
+    public void moveLeft() {
+        Log.i(TAG,"Pikachu left Up.");
+        mPosX -= 100;
+    }
+
+    public void moveRight() {
+        Log.i(TAG,"Pikachu right Up.");
+        mPosX += 100;
     }
 }

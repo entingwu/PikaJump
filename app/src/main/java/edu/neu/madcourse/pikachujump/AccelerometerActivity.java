@@ -40,7 +40,7 @@ public class AccelerometerActivity extends Activity {
 
         mWakeLock = mPowerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, getClass().getName());
         mSimulationView = new SimulationView(this);
-        mSimulationView.setBackgroundResource(R.drawable.background_0);
+        //mSimulationView.setBackgroundResource(R.drawable.background_0);
         setContentView(mSimulationView);
     }
 

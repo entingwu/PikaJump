@@ -13,9 +13,11 @@ import android.util.Log;
 public class GameActivity extends Activity implements SensorEventListener {
 
     public static final String TAG = "GameActivity";
+    public static final String KEY_RESTORE = "key_restore";
     private static final float threshold = 5;
     public GameView gameView;
     private SensorManager mSensorManager;
+    private GameFragment mGameFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,12 @@ public class GameActivity extends Activity implements SensorEventListener {
             Log.i(TAG, String.valueOf(accelerationSquareRoot));
             if (accelerationSquareRoot >= threshold && Math.abs(y) >= threshold) {
                 gameView.setJumpTrue();
+                if (y >= 10) {
+                    gameView.moveLeft();
+                }
+                if (y <= -10) {
+                    gameView.moveRight();
+                }
                 return;
             }
         }
