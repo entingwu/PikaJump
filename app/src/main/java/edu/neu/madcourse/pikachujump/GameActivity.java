@@ -1,11 +1,13 @@
 package edu.neu.madcourse.pikachujump;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.support.v7.app.AlertDialog;
 import android.view.Window;
 import android.view.WindowManager;
 import android.util.Log;
@@ -14,10 +16,11 @@ public class GameActivity extends Activity implements SensorEventListener {
 
     public static final String TAG = "GameActivity";
     public static final String KEY_RESTORE = "key_restore";
-    private static final float threshold = 5;
+    private static final float threshold = 3;
     public GameView gameView;
     private SensorManager mSensorManager;
     private GameFragment mGameFragment;
+    private AlertDialog.Builder mBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,7 @@ public class GameActivity extends Activity implements SensorEventListener {
 
         Log.i(TAG, "Initialize Sensor Manager");
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        mBuilder = new AlertDialog.Builder(this);
     }
 
     @Override
@@ -43,13 +47,15 @@ public class GameActivity extends Activity implements SensorEventListener {
 
             float accelerationSquareRoot =
                     (x * x + y * y + z * z) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
-            Log.i(TAG, String.valueOf(accelerationSquareRoot));
-            if (accelerationSquareRoot >= threshold && Math.abs(y) >= threshold) {
+            //Log.i(TAG, String.valueOf(accelerationSquareRoot));
+            if (accelerationSquareRoot >= threshold && Math.abs(x) > Math.abs(y)) {
+                gameView.pikachu.setVelX(gameView.pikachu.getVelX() + Math.abs(y));
+                gameView.pikachu.setVelY(gameView.pikachu.getVelY() + Math.abs(x));
                 gameView.setJumpTrue();
-                if (y >= 10) {
+                if (y < 0) {
                     gameView.moveLeft();
                 }
-                if (y <= -10) {
+                if (y > 0) {
                     gameView.moveRight();
                 }
                 return;
@@ -60,8 +66,30 @@ public class GameActivity extends Activity implements SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) { }
 
+    public void win() {
+        /** 1. Display Dialog */
+        mBuilder.setMessage(String.format("Good job! Your score is: %s", gameView.score));
+        mBuilder.setCancelable(false);
+        mBuilder.setPositiveButton(R.string.main_menu_label,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.i(TAG, "Pika jump winner");
+                        finish();
+                        onBackPressed();
+                    }
+                });
+        mBuilder.show();
+    }
+
+    public void finish() {
+        super.finish();
+        gameView.timer.cancel();
+    }
+
     @Override
     protected void onResume() {
+        Log.i(TAG, "onResume");
         super.onResume();
         gameView.resume();
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
@@ -70,6 +98,7 @@ public class GameActivity extends Activity implements SensorEventListener {
 
     @Override
     protected void onPause() {
+        Log.i(TAG, "onPause");
         super.onPause();
         gameView.pause();
         mSensorManager.unregisterListener(this);

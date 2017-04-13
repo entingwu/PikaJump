@@ -10,12 +10,12 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
 import java.util.Random;
 
 public class GameView extends SurfaceView implements Runnable {
@@ -37,7 +37,8 @@ public class GameView extends SurfaceView implements Runnable {
     private int mHeight;
 
     // Pikachu
-    private Pikachu pikachu;
+    public Pikachu pikachu;
+    private float maxVelX = 30;
 
     // Fruit array
     private Fruit[] fruits = new Fruit[300];
@@ -45,8 +46,11 @@ public class GameView extends SurfaceView implements Runnable {
     private Random random;
 
     // Game is paused at the start
-    private boolean paused;
-    private int score;
+    public boolean paused;
+    public int score;
+    public CountDownTimer timer;
+    private long totalSec;
+    private String timerText = "";
     private long timeThisFrame;
 
     private int frameWidth = 384;
@@ -84,6 +88,8 @@ public class GameView extends SurfaceView implements Runnable {
         banana = BitmapFactory.decodeResource(getResources(), R.drawable.banana);
         coke = BitmapFactory.decodeResource(getResources(), R.drawable.coke);
         createFruitsAndRestart();
+
+        initTimer(60000);
     }
 
     public void createFruitsAndRestart() {
@@ -106,22 +112,44 @@ public class GameView extends SurfaceView implements Runnable {
         Log.i(TAG, String.valueOf(fruits.length));
     }
 
+    public void initTimer(long leftTime) {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+        timer = new CountDownTimer(leftTime, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                totalSec = millisUntilFinished / 1000;
+                Log.i(TAG, "@" + totalSec);
+                long mins = totalSec / 60;
+                long secs = totalSec % 60;
+                timerText = (mins < 10? "0" + mins : mins) + ":" + (secs < 10? "0" + secs : secs);
+            }
+
+            @Override
+            public void onFinish() {
+                timerText = "00:00";
+                ((GameActivity)getContext()).win();
+            }
+        }.start();
+    }
+
     @Override
     public void run() {
         while (playGame) {
-            // Curr Time
-            long startFrameTime = System.currentTimeMillis();
-            // Update the frame
             if (!paused) {
+                // Curr Time
+                long startFrameTime = System.currentTimeMillis();
+                // Update the frame
                 update();
-            }
-
-            // Draw the frame
-            draw();
-            timeThisFrame = System.currentTimeMillis() - startFrameTime;
-            if (timeThisFrame >= 1) {
-                // Current frame per second
-                pikachu.setFps(1000 / timeThisFrame);
+                // Draw the frame
+                draw();
+                timeThisFrame = System.currentTimeMillis() - startFrameTime;
+                if (timeThisFrame >= 1) {
+                    // Current frame per second
+                    pikachu.setFps(1000 / timeThisFrame);
+                }
             }
         }
     }
@@ -177,6 +205,8 @@ public class GameView extends SurfaceView implements Runnable {
             // Draw the score
             paint.setTextSize(30);
             canvas.drawText("Score: " + score, 3, mHeight - 3, paint);
+            // Draw the timer
+            canvas.drawText(timerText, mWidth - 75, mHeight - 3, paint);
 
             // Update frameToDraw
             getCurrentFrame();
@@ -210,17 +240,22 @@ public class GameView extends SurfaceView implements Runnable {
     public boolean onTouchEvent(MotionEvent motionEvent) {
         switch(motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
-                paused = true;
-                break;
-            case MotionEvent.ACTION_UP:
-                paused = false;
+                if (!paused) {
+                    paused = true;
+                    pause();
+                } else {
+                    paused = false;
+                    resume();
+                }
                 break;
         }
         return true;
     }
 
     public void pause() {
+        Log.i(TAG, "Pause Game.");
         playGame = false;
+        timer.cancel();
         try {
             gameThread.join();
         } catch(InterruptedException e) {
@@ -229,10 +264,11 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void resume() {
-        Log.i(TAG, "Resume.");
+        Log.i(TAG, "Resume." + totalSec);
         playGame = true;
         gameThread = new Thread(this);
         gameThread.start();
+        //initTimer(totalSec * 1000);
     }
 
     public void setJumpTrue() {
@@ -241,12 +277,16 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void moveLeft() {
-        Log.i(TAG,"Pikachu left Up.");
-        pikachu.setPosX(pikachu.getPosX() - 100);
+        Log.i(TAG,"Pikachu left." + pikachu.getVelX());
+        float mPosX = pikachu.getPosX() - Math.max(pikachu.getVelX(), maxVelX);
+        mPosX = Math.max(30, mPosX);
+        pikachu.setPosX(mPosX);
     }
 
     public void moveRight() {
-        Log.i(TAG,"Pikachu right Up.");
-        pikachu.setPosX(pikachu.getPosX() + 100);
+        Log.i(TAG,"Pikachu right." + pikachu.getVelX());
+        float mPosX = pikachu.getPosX() + Math.max(pikachu.getVelX(), maxVelX);
+        mPosX = Math.min(mWidth - 30, mPosX);
+        pikachu.setPosX(mPosX);
     }
 }
