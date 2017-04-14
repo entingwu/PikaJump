@@ -7,11 +7,7 @@ public class Fruit {
     private RectF fruit;
     private FruitType fruitType;
     private boolean isVisible;
-
     private int fruitScore;
-    private int paddingRow = 4;
-    private int paddingCol = 12;
-
     // fruit size
     private int width;
     private int height;
@@ -24,17 +20,17 @@ public class Fruit {
             case APPLE:
                 this.width = mWidth / 13;
                 this.height = mHeight / 10;
-                this.fruitScore = 10;
+                this.fruitScore = GameUtils.appleScore;
                 break;
             case BANANA:
                 this.width = mWidth / 11;
                 this.height = mHeight / 10;
-                this.fruitScore = 30;
+                this.fruitScore = GameUtils.bananaScore;
                 break;
             case COKE:
                 this.width = mWidth / 16;
                 this.height = mHeight / 10;
-                this.fruitScore = -10;
+                this.fruitScore = -GameUtils.cokeScore;
                 break;
             default:
                 this.isVisible = false;
@@ -42,10 +38,10 @@ public class Fruit {
         }
         float maxWidth = mWidth / 11;
         float maxHeight = mHeight / 10;
-        fruit = new RectF(column * maxWidth + paddingCol,
-                row * maxHeight + paddingRow,
-                column * maxWidth + this.width - paddingCol,
-                row * maxHeight + this.height - paddingRow);
+        fruit = new RectF(column * maxWidth + GameUtils.paddingCol,
+                row * maxHeight + GameUtils.paddingRow,
+                column * maxWidth + this.width - GameUtils.paddingCol,
+                row * maxHeight + this.height - GameUtils.paddingRow);
     }
 
     public RectF getFruit() {
@@ -54,14 +50,6 @@ public class Fruit {
 
     public void setFruit(RectF fruit) {
         this.fruit = fruit;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
     }
 
     public void setInvisible() {

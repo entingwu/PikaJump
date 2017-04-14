@@ -16,9 +16,8 @@ public class GameActivity extends Activity implements SensorEventListener {
 
     public static final String TAG = "GameActivity";
     public static final String KEY_RESTORE = "key_restore";
-    private static final float threshold = 5;
-    private float maxVel = 5;
-    public GameView gameView;
+    public static final String PREF_RESTORE = "pref_restore";
+    public GameView mGameView;
     private SensorManager mSensorManager;
     private AlertDialog.Builder mBuilder;
 
@@ -28,8 +27,17 @@ public class GameActivity extends Activity implements SensorEventListener {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
-        gameView = new GameView(this);
-        setContentView(gameView);
+        mGameView = new GameView(this);
+
+        boolean restore = getIntent().getBooleanExtra(KEY_RESTORE, false);
+        Log.d("UT3", "restore = " + restore);
+        if (restore) {
+            String gameData = getPreferences(MODE_PRIVATE).getString(PREF_RESTORE, null);
+            if (gameData != null) {
+                mGameView.putState(gameData);
+            }
+        }
+        setContentView(mGameView);
 
         Log.i(TAG, "Initialize Sensor Manager");
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -48,20 +56,15 @@ public class GameActivity extends Activity implements SensorEventListener {
             float accelerationSquareRoot =
                     (x * x + y * y + z * z) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
             if (Math.abs(y) > Math.abs(x)) {
-                float deltaX = Math.min(Math.abs(y), maxVel);
-                gameView.pikachu.setVelX(gameView.pikachu.getVelX() + deltaX);
-                if (y < -threshold) {
-                    gameView.moveLeft();
-                }
-                if (y > threshold) {
-                    gameView.moveRight();
-                }
+                float deltaX = Math.min(Math.abs(y), GameUtils.maxVel);
+                mGameView.pikachu.setVelX(mGameView.pikachu.getVelX() + deltaX);
+                mGameView.y = y;
             }
-            if (accelerationSquareRoot >= threshold &&
-                    Math.abs(x) > Math.abs(y) && Math.abs(x) > threshold) {
-                float deltaY = Math.min(Math.abs(x), maxVel);
-                gameView.pikachu.setVelY(gameView.pikachu.getVelY() + deltaY);
-                gameView.setJumpTrue();
+            if (accelerationSquareRoot >= GameUtils.threshold &&
+                    Math.abs(x) > Math.abs(y) && Math.abs(x) > GameUtils.threshold) {
+                float deltaY = Math.min(Math.abs(x), GameUtils.maxVel);
+                mGameView.pikachu.setVelY(mGameView.pikachu.getVelY() + deltaY);
+                mGameView.setJumpTrue();
             }
         }
     }
@@ -71,39 +74,42 @@ public class GameActivity extends Activity implements SensorEventListener {
 
     public void win() {
         /** 1. Display Dialog */
-        mBuilder.setMessage(String.format("Good job! Your score is: %s", gameView.score));
+        mBuilder.setMessage(String.format("Good job! Your score is: %s", GameUtils.score));
         mBuilder.setCancelable(false);
         mBuilder.setPositiveButton(R.string.main_menu_label,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.i(TAG, "Pika jump winner");
-                        finish();
-                        onBackPressed();
-                    }
-                });
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Log.i(TAG, "Pika Jump Winner");
+                    finish();
+                    onBackPressed();
+                }
+            });
         mBuilder.show();
+        GameUtils.score = 0;
     }
 
     public void finish() {
         super.finish();
-        gameView.timer.cancel();
+        mGameView.timer.cancel();
     }
 
     @Override
     protected void onResume() {
         Log.i(TAG, "onResume");
         super.onResume();
-        gameView.resume();
+        mGameView.resume();
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
     protected void onPause() {
-        Log.i(TAG, "onPause");
         super.onPause();
-        gameView.pause();
+        mGameView.pause();
+        String gameData = mGameView.getState();
+        getPreferences(MODE_PRIVATE).edit().putString(PREF_RESTORE, gameData).commit();
+        Log.i(TAG, "onPause: " + gameData);
         mSensorManager.unregisterListener(this);
     }
 }

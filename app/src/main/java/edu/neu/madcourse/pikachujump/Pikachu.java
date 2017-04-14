@@ -1,9 +1,11 @@
 package edu.neu.madcourse.pikachujump;
 
 import android.graphics.RectF;
+import android.util.Log;
 
 public class Pikachu {
 
+    public static final String TAG = "Pikachu";
     private RectF pikachu;
     private float mPosX;
     private float mPosY;
@@ -31,30 +33,32 @@ public class Pikachu {
         // Move to the right place
         if (isJumping) {
             if (currentFrame >= 0 && currentFrame <= 3) {// up
-                this.mPosY = this.mPosY - mVelY / fps;
+                this.mPosY = Math.max(this.mPosY - mVelY / fps, 0);
             } else if (currentFrame < 7) {// down
-                this.mPosY = this.mPosY + mVelY / fps;
+                this.mPosY = Math.min(this.mPosY + mVelY / fps, mHeight / 2);
             } else if (currentFrame == 7) {
                 this.mPosY = mHeight / 2;
             }
         }
     }
 
+    public void moveLeft() {
+        Log.i(TAG,"Left Jump." + mVelX);
+        mPosX -= mVelX * 0.05f;
+        mPosX = Math.max(30, mPosX);
+    }
+
+    public void moveRight() {
+        Log.i(TAG,"Right Jump." + mVelX);
+        mPosX -= mVelX * 0.05f;
+        mPosX = Math.min(mWidth - 30, mPosX);
+    }
+
     public float getPosX() {
         return mPosX;
     }
 
-    public void setPosX(float mPosX) {
-        this.mPosX = mPosX;
-    }
-
-    public float getPosY() {
-        return mPosY;
-    }
-
-    public void setPosY(float mPosY) {
-        this.mPosY = mPosY;
-    }
+    public float getPosY() { return mPosY; }
 
     public boolean isJumping() {
         return isJumping;
