@@ -16,10 +16,10 @@ public class GameActivity extends Activity implements SensorEventListener {
 
     public static final String TAG = "GameActivity";
     public static final String KEY_RESTORE = "key_restore";
-    private static final float threshold = 3;
+    private static final float threshold = 5;
+    private float maxVel = 5;
     public GameView gameView;
     private SensorManager mSensorManager;
-    private GameFragment mGameFragment;
     private AlertDialog.Builder mBuilder;
 
     @Override
@@ -47,18 +47,21 @@ public class GameActivity extends Activity implements SensorEventListener {
 
             float accelerationSquareRoot =
                     (x * x + y * y + z * z) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
-            //Log.i(TAG, String.valueOf(accelerationSquareRoot));
-            if (accelerationSquareRoot >= threshold && Math.abs(x) > Math.abs(y)) {
-                gameView.pikachu.setVelX(gameView.pikachu.getVelX() + Math.abs(y));
-                gameView.pikachu.setVelY(gameView.pikachu.getVelY() + Math.abs(x));
-                gameView.setJumpTrue();
-                if (y < 0) {
+            if (Math.abs(y) > Math.abs(x)) {
+                float deltaX = Math.min(Math.abs(y), maxVel);
+                gameView.pikachu.setVelX(gameView.pikachu.getVelX() + deltaX);
+                if (y < -threshold) {
                     gameView.moveLeft();
                 }
-                if (y > 0) {
+                if (y > threshold) {
                     gameView.moveRight();
                 }
-                return;
+            }
+            if (accelerationSquareRoot >= threshold &&
+                    Math.abs(x) > Math.abs(y) && Math.abs(x) > threshold) {
+                float deltaY = Math.min(Math.abs(x), maxVel);
+                gameView.pikachu.setVelY(gameView.pikachu.getVelY() + deltaY);
+                gameView.setJumpTrue();
             }
         }
     }

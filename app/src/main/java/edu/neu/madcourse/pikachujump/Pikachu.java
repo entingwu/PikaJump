@@ -30,9 +30,9 @@ public class Pikachu {
     public void update() {
         // Move to the right place
         if (isJumping) {
-            if (currentFrame >= 0 && currentFrame <= 3) {
+            if (currentFrame >= 0 && currentFrame <= 3) {// up
                 this.mPosY = this.mPosY - mVelY / fps;
-            } else if (currentFrame < 7) {
+            } else if (currentFrame < 7) {// down
                 this.mPosY = this.mPosY + mVelY / fps;
             } else if (currentFrame == 7) {
                 this.mPosY = mHeight / 2;

@@ -38,7 +38,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     // Pikachu
     public Pikachu pikachu;
-    private float maxVelX = 30;
+    private int dx = 3;
 
     // Fruit array
     private Fruit[] fruits = new Fruit[300];
@@ -96,7 +96,7 @@ public class GameView extends SurfaceView implements Runnable {
         numFruits = 0;
         for (int column = 0; column < 13; column++) {
             for (int row = 0; row < 4; row++) {
-                int type = random.nextInt(5);
+                int type = random.nextInt(6);
                 if (type == 0 || type == 1) {// apple
                     fruits[numFruits] = new Fruit(row, column, mWidth, mHeight, FruitType.APPLE);
                 } else if (type == 2) {// banana
@@ -184,24 +184,8 @@ public class GameView extends SurfaceView implements Runnable {
             whereToDraw.set(pikachu.getPosX() - frameWidth/2, (int)pikachu.getPosY() - frameHeight/2,
                     pikachu.getPosX() + frameWidth/2, (int)pikachu.getPosY() + frameHeight/2);
 
-            // Draw the visible fruits
-            for (int i = 0; i < numFruits; i++) {
-                if (fruits[i].getVisibility()) {
-                    FruitType type = fruits[i].getFruitType();
-                    switch (type) {
-                        case APPLE:
-                            canvas.drawBitmap(apple, null, fruits[i].getFruit(), paint);
-                            break;
-                        case BANANA:
-                            canvas.drawBitmap(banana, null, fruits[i].getFruit(), paint);
-                            break;
-                        case COKE:
-                            canvas.drawBitmap(coke, null, fruits[i].getFruit(), paint);
-                            break;
-                    }
-                }
-            }
-
+            // Draw dynamic visible fruits
+            drawFruits();
             // Draw the score
             paint.setTextSize(30);
             canvas.drawText("Score: " + score, 3, mHeight - 3, paint);
@@ -212,6 +196,39 @@ public class GameView extends SurfaceView implements Runnable {
             getCurrentFrame();
             canvas.drawBitmap(bitmapPika, frameToDraw, whereToDraw, paint);
             surfaceHolder.unlockCanvasAndPost(canvas);
+        }
+    }
+
+    private void drawFruits() {
+        for (int i = 0; i < numFruits; i++) {
+            Fruit fruit = fruits[i];
+            if (fruit.getVisibility()) {
+                FruitType type = fruits[i].getFruitType();
+                RectF rectF = fruit.getFruit();
+                float nextPos = rectF.centerX() + dx;
+                if (nextPos > mWidth) {
+                    nextPos = nextPos - mWidth;
+                }
+                float rounded = nextPos;
+                float left = rounded - rectF.width() * 0.5f ;
+                float right = rounded + rectF.width()  * 0.5f;
+                float top = rectF.centerY() - rectF.height()  * 0.5f;
+                float bottom = rectF.centerY() + rectF.height() * 0.5f;
+
+                RectF newRectF = new RectF(left, top, right, bottom);
+                switch (type) {
+                    case APPLE:
+                        canvas.drawBitmap(apple, null, newRectF, paint);
+                        break;
+                    case BANANA:
+                        canvas.drawBitmap(banana, null, newRectF, paint);
+                        break;
+                    case COKE:
+                        canvas.drawBitmap(coke, null, newRectF, paint);
+                        break;
+                }
+                fruit.setFruit(newRectF);
+            }
         }
     }
 
@@ -268,7 +285,7 @@ public class GameView extends SurfaceView implements Runnable {
         playGame = true;
         gameThread = new Thread(this);
         gameThread.start();
-        //initTimer(totalSec * 1000);
+        initTimer(totalSec * 1000);
     }
 
     public void setJumpTrue() {
@@ -278,14 +295,14 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void moveLeft() {
         Log.i(TAG,"Pikachu left." + pikachu.getVelX());
-        float mPosX = pikachu.getPosX() - Math.max(pikachu.getVelX(), maxVelX);
+        float mPosX = pikachu.getPosX() - pikachu.getVelX();
         mPosX = Math.max(30, mPosX);
         pikachu.setPosX(mPosX);
     }
 
     public void moveRight() {
         Log.i(TAG,"Pikachu right." + pikachu.getVelX());
-        float mPosX = pikachu.getPosX() + Math.max(pikachu.getVelX(), maxVelX);
+        float mPosX = pikachu.getPosX() + pikachu.getVelX();
         mPosX = Math.min(mWidth - 30, mPosX);
         pikachu.setPosX(mPosX);
     }

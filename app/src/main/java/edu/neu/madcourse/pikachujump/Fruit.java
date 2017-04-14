@@ -52,6 +52,18 @@ public class Fruit {
         return this.fruit;
     }
 
+    public void setFruit(RectF fruit) {
+        this.fruit = fruit;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     public void setInvisible() {
         isVisible = false;
     }
