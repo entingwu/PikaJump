@@ -38,6 +38,15 @@ public class MainFragment extends Fragment {
             }
         });
 
+        //temporary use score button directly to login page, not for production
+        scoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
         // Inflate the layout for this fragment
         return rootView;
     }

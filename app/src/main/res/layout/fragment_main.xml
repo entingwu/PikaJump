@@ -24,5 +24,4 @@
         android:id="@+id/score_button"
         android:text="@string/score_label"
         style="@style/MenuButtonStyle"/>
-
 </LinearLayout>
