@@ -1,29 +1,46 @@
 package edu.neu.madcourse.pikachujump;
 
+import android.graphics.Bitmap;
+import android.graphics.Rect;
+import android.graphics.RectF;
+
 public class GameUtils {
 
     public static final String DIV = ",";
-    public static final float threshold = 4;
+    public static final float thresholdX = 5;
+    public static final float thresholdY = 1;
     public static final float mVolume = 2f;
     public static final float mRate = 1f;
 
+    // The size of the screen in pixels
+    public static int mWidth;
+    public static int mHeight;
+
     // Pikachu max mVelX
-    public static final float maxVel = 15;
-    public static final int dx = 3;
+    public static float maxVelX = 8;
+    public static float maxVelY = 20;
+    public static int dx = 3;
 
     // Pikachu frame
-
+    public static Bitmap bitmapPika;
+    public static int frameWidth;
+    public static int frameHeight;
     public static final int frameCount = 8;
     public static final int frameLengthInMilliseconds = 200;
+    // A rectangle to define an area of the sprite sheet that represents 1 frame
+    public static Rect frameToDraw;
+    // A rect that defines an area of the screen on which to draw
+    public static RectF whereToDraw;
 
     // Fruits
     public static final int paddingRow = 4;
     public static final int paddingCol = 12;
 
-    public static final int totalFruits = 1000;
+    public static final int totalFruits = 13 * 4;
     public static final int appleScore = 10;
     public static final int bananaScore = 30;
     public static final int cokeScore = -10;
+    public static int visibleFruit;
 
     // Game Data
     public static long totalSec = 60;

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_instruction"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.neu.madcourse.pikachujump.InstructionActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background_4"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/info_margin"
+        android:gravity="center_vertical|center_horizontal|center">
+
+        <TextView
+            android:id="@+id/how_to_play"
+            android:text="@string/how_to_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="@style/TextDefaultStyle"
+            android:textSize="@dimen/font_size_large"
+            android:textStyle="bold"
+            android:textColor="@color/orange_color"
+            android:layout_margin="@dimen/menu_button_padding"
+            android:background="?android:attr/selectableItemBackground"/>
+
+        <TextView
+            android:id="@+id/lift_up_info"
+            android:text="@string/lift_up_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="@style/TextDefaultStyle"
+            android:textSize="@dimen/font_size_m"
+            android:layout_margin="@dimen/menu_button_margin"
+            android:background="?android:attr/selectableItemBackground"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:background="?android:attr/dividerVertical"
+        style="?android:buttonBarStyle" >
+
+        <Button
+            android:id="@+id/exit_button"
+            android:text="@string/exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start|bottom"
+            android:textColor="@color/colorPrimaryLight"
+            android:onClick="backToMenu"
+            android:background="?android:attr/selectableItemBackground"/>
+    </LinearLayout>
+
+</FrameLayout>

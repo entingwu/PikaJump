@@ -14,4 +14,10 @@
     <string name="initial_score">Score: 0</string>
     <string name="initial_timer">Time Remaining: 01:00</string>
     <string name="main_menu_label">Back to Menu</string>
+
+    <!--Instruction-->
+    <string name="exit">Exit</string>
+    <string name="play">Play</string>
+    <string name="how_to_play">Time to Work Out</string>
+    <string name="lift_up_info">Lift Up the Phone to Jump \n\n Move the Phone to Left | Right</string>
 </resources>

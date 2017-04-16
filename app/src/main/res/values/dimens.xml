@@ -4,10 +4,11 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="font_size_extra_large">30sp</dimen>
     <dimen name="font_size_large">25sp</dimen>
+    <dimen name="font_size_m">20sp</dimen>
     <dimen name="font_size_medium">15sp</dimen>
     <dimen name="tile_size">35dp</dimen>
-    <dimen name="tile_margin">20dp</dimen>
-    <dimen name="tile_padding">3dp</dimen>
+    <dimen name="tile_margin">5dp</dimen>
+    <dimen name="tile_padding">5dp</dimen>
     <dimen name="control_padding">20dp</dimen>
     <dimen name="elevation_low">4dp</dimen>
     <dimen name="elevation_high">8dp</dimen>
@@ -21,6 +22,7 @@
     <dimen name="menu_space">10dp</dimen>
     <dimen name="menu_stroke">2dp</dimen>
     <dimen name="menu_icon_width">25dp</dimen>
+    <dimen name="info_margin">60dp</dimen>
 
     <dimen name="fruit_board_padding">2dp</dimen>
 

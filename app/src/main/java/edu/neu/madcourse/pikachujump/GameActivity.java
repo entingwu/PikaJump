@@ -2,12 +2,14 @@ package edu.neu.madcourse.pikachujump;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.support.v7.app.AlertDialog;
+import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
 import android.util.Log;
@@ -27,6 +29,17 @@ public class GameActivity extends Activity implements SensorEventListener {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
+        // Get a Display object to access screen details
+        Display display = this.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        GameUtils.mWidth = size.x;
+        GameUtils.mHeight = size.y;
+        GameUtils.frameWidth = (int)(GameUtils.mWidth / 2.5);
+        GameUtils.frameHeight = GameUtils.frameWidth;
+        GameUtils.dx = GameUtils.mWidth / 120;
+        GameUtils.maxVelX = GameUtils.mHeight / 15;
+        GameUtils.maxVelY = GameUtils.mHeight / 8;
         mGameView = new GameView(this);
 
         boolean restore = getIntent().getBooleanExtra(KEY_RESTORE, false);
@@ -54,17 +67,19 @@ public class GameActivity extends Activity implements SensorEventListener {
 
             float accelerationSquareRoot =
                     (x * x + y * y) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
+            // Left, right
             if (Math.abs(y) > Math.abs(x)) {
-                float deltaX = Math.min(Math.abs(y), GameUtils.maxVel);
+                float deltaX = Math.min(Math.abs(y), GameUtils.maxVelX);
                 mGameView.pikachu.setVelX(mGameView.pikachu.getVelX() + deltaX);
                 mGameView.y = y;
                 Log.i(TAG, "Accelerometer: x=" + x + ", y=" + y + ", z=" + z + ", acc=" + accelerationSquareRoot);
             }
-            if (Math.abs(x - SensorManager.GRAVITY_EARTH) > GameUtils.threshold
-                    && Math.abs(x) > GameUtils.threshold && Math.abs(x) > Math.abs(y)) {
-                float deltaY = Math.min(Math.abs(x), GameUtils.maxVel);
+            // Up
+            if (Math.abs(x - SensorManager.GRAVITY_EARTH) > GameUtils.thresholdY
+                    && Math.abs(x) > GameUtils.thresholdY && Math.abs(x) > Math.abs(y)) {
+                float deltaY = Math.min(Math.abs(x), GameUtils.maxVelY);
                 mGameView.pikachu.setVelY(mGameView.pikachu.getVelY() + deltaY);
-                mGameView.setJumpTrue();
+                mGameView.pikachu.setJumping(true);
             }
         }
     }
