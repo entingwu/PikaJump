@@ -38,6 +38,14 @@ public class MainFragment extends Fragment {
             }
         });
 
+        scoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), LeaderBoardActivity.class);
+                startActivity(intent);
+            }
+        });
+
         // Inflate the layout for this fragment
         return rootView;
     }

@@ -79,6 +79,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void createFruitsAndRestart() {
         numFruits = 0;
+        GameUtils.jumps = 0;
         for (int column = 0; column < 13; column++) {
             for (int row = 0; row < 4; row++) {
                 int type = random.nextInt(6);
@@ -257,6 +258,7 @@ public class GameView extends SurfaceView implements Runnable {
                 pikachu.setCurrentFrame(currentFrame);
                 if (currentFrame >= GameUtils.frameCount) {
                     currentFrame = 0;
+                    GameUtils.jumps++;
                     pikachu.setCurrentFrame(currentFrame);
                     pikachu.setJumping(false);
                 }
@@ -309,11 +311,12 @@ public class GameView extends SurfaceView implements Runnable {
         initTimer(GameUtils.totalSec * 1000);
     }
 
-    /** totalSec, score, apples, bananas, cokes */
+    /** totalSec, score, jumps, apples, bananas, cokes */
     public String getState() {
         StringBuilder sb = new StringBuilder();
         sb.append(GameUtils.totalSec).append(GameUtils.DIV);
         sb.append(GameUtils.score).append(GameUtils.DIV);
+        sb.append(GameUtils.jumps).append(GameUtils.DIV);
         sb.append(GameUtils.apples).append(GameUtils.DIV);
         sb.append(GameUtils.bananas).append(GameUtils.DIV);
         sb.append(GameUtils.cokes).append(GameUtils.DIV);
@@ -324,8 +327,9 @@ public class GameView extends SurfaceView implements Runnable {
         String[] data = gameData.split(GameUtils.DIV);
         GameUtils.totalSec = Integer.parseInt(data[0]);
         GameUtils.score = Integer.parseInt(data[1]);
-        GameUtils.apples = Integer.parseInt(data[2]);
-        GameUtils.bananas = Integer.parseInt(data[3]);
-        GameUtils.cokes = Integer.parseInt(data[4]);
+        GameUtils.jumps = Integer.parseInt(data[2]);
+        GameUtils.apples = Integer.parseInt(data[3]);
+        GameUtils.bananas = Integer.parseInt(data[4]);
+        GameUtils.cokes = Integer.parseInt(data[5]);
     }
 }
