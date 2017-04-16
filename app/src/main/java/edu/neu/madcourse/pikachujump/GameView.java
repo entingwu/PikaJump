@@ -10,6 +10,8 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.Display;
@@ -22,6 +24,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     public static final String TAG = "GameView";
     public Thread gameThread = null;
+
     // Need surfaceHolder when use Paint and Canvas in a thread
     private SurfaceHolder surfaceHolder;
     private volatile boolean playGame;
@@ -51,13 +54,18 @@ public class GameView extends SurfaceView implements Runnable {
     private String timerText = "";
     private long timeThisFrame;
 
+    public int frameWidth = 384;
+    public int frameHeight = 384;
     // Time that last frame has changed
     private long lastFrameChangeTime = 0;
 
     // A rectangle to define an area of the sprite sheet that represents 1 frame
-    private Rect frameToDraw = new Rect(0, 0, GameUtils.frameWidth, GameUtils.frameHeight);
+    private Rect frameToDraw;
     // A rect that defines an area of the screen on which to draw
     private RectF whereToDraw;
+
+    private SoundPool mSoundPool;
+    private int mSoundApple, mSoundBanana, mSoundCoke, mSoundMiss;
 
     public GameView(Context context) {
         super(context);
@@ -72,20 +80,26 @@ public class GameView extends SurfaceView implements Runnable {
         mWidth = size.x;
         mHeight = size.y;
         pikachu = new Pikachu(mWidth / 2, mHeight / 2);
-        whereToDraw = new RectF(pikachu.getPosX() - GameUtils.frameWidth/2,
-                      (int)pikachu.getPosY() - GameUtils.frameHeight/2,
-                      pikachu.getPosX() + GameUtils.frameWidth/2,
-                      (int)pikachu.getPosY() + GameUtils.frameHeight/2);
+        frameToDraw = new Rect(0, 0, frameWidth, frameHeight);
+        whereToDraw = new RectF(pikachu.getPosX() - frameWidth/2,
+                      (int)pikachu.getPosY() - frameHeight/2,
+                      pikachu.getPosX() + frameWidth/2,
+                      (int)pikachu.getPosY() + frameHeight/2);
 
         bitmapPika = BitmapFactory.decodeResource(getResources(), R.drawable.pika_sprite_8_384);
         bitmapPika = Bitmap.createScaledBitmap(bitmapPika,
-                GameUtils.frameWidth * GameUtils.frameCount, GameUtils.frameHeight, false);
+                frameWidth * GameUtils.frameCount, frameHeight, false);
         apple = BitmapFactory.decodeResource(getResources(), R.drawable.apple);
         banana = BitmapFactory.decodeResource(getResources(), R.drawable.banana);
         coke = BitmapFactory.decodeResource(getResources(), R.drawable.coke);
         createFruitsAndRestart();
-
         initTimer(60000);
+
+        mSoundPool = new SoundPool(3, AudioManager.STREAM_MUSIC, 0);
+        mSoundApple = mSoundPool.load(context, R.raw.sergenious_movex, 1);
+        mSoundBanana = mSoundPool.load(context, R.raw.sergenious_moveo, 1);
+        mSoundCoke = mSoundPool.load(context, R.raw.joanne_rewind, 1);
+        mSoundMiss = mSoundPool.load(context, R.raw.erkanozan_miss, 1);
     }
 
     public void createFruitsAndRestart() {
@@ -120,6 +134,10 @@ public class GameView extends SurfaceView implements Runnable {
                 long mins = GameUtils.totalSec / 60;
                 long secs = GameUtils.totalSec % 60;
                 timerText = (mins < 10? "0" + mins : mins) + ":" + (secs < 10? "0" + secs : secs);
+                if (secs < 10) {
+                    mSoundPool.play(mSoundMiss, GameUtils.mVolume, GameUtils.mVolume,
+                            1, 0, GameUtils.mRate);
+                }
             }
 
             @Override
@@ -160,10 +178,16 @@ public class GameView extends SurfaceView implements Runnable {
             if (RectF.intersects(pikaRect, fruit.getFruit()) && fruit.getVisibility()) {
                 FruitType type = fruit.getFruitType();
                 if(type == FruitType.APPLE) {
+                    mSoundPool.play(mSoundApple, GameUtils.mVolume, GameUtils.mVolume,
+                            1, 0, GameUtils.mRate);
                     GameUtils.apples++;
                 } else if (type == FruitType.BANANA) {
+                    mSoundPool.play(mSoundBanana, GameUtils.mVolume, GameUtils.mVolume,
+                            1, 0, GameUtils.mRate);
                     GameUtils.bananas++;
                 } else if (type == FruitType.COKE) {
+                    mSoundPool.play(mSoundCoke, GameUtils.mVolume, GameUtils.mVolume,
+                            1, 0, GameUtils.mRate);
                     GameUtils.cokes++;
                 }
                 GameUtils.score += fruit.getFruitScore();
@@ -183,10 +207,10 @@ public class GameView extends SurfaceView implements Runnable {
             paint.setColor(Color.argb(255, 255, 255, 255));
 
             // Draw the Pikachu
-            whereToDraw.set(pikachu.getPosX() - GameUtils.frameWidth/2,
-                           (int)pikachu.getPosY() - GameUtils.frameHeight/2,
-                            pikachu.getPosX() + GameUtils.frameWidth/2,
-                           (int)pikachu.getPosY() + GameUtils.frameHeight/2);
+            whereToDraw.set(pikachu.getPosX() - frameWidth/2,
+                           (int)pikachu.getPosY() - frameHeight/2,
+                            pikachu.getPosX() + frameWidth/2,
+                           (int)pikachu.getPosY() + frameHeight/2);
 
             // Draw dynamic visible fruits
             drawFruits();
@@ -252,15 +276,16 @@ public class GameView extends SurfaceView implements Runnable {
                 }
             }
             if (y < -GameUtils.threshold) {
-                pikachu.moveLeft();
+                pikachu.moveLeft(y);
             }
             if (y > GameUtils.threshold) {
-                pikachu.moveRight();
+                pikachu.moveRight(y);
             }
         }
+
         //update the left and right values of the source of the next frame on the sprite sheet
-        frameToDraw.left = currentFrame * GameUtils.frameWidth;
-        frameToDraw.right = frameToDraw.left + GameUtils.frameWidth;
+        frameToDraw.left = currentFrame * frameWidth;
+        frameToDraw.right = frameToDraw.left + frameWidth;
     }
 
     @Override

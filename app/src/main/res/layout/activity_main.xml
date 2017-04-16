@@ -40,10 +40,10 @@
             tools:layout="@layout/fragment_main" />
 
         <Button
+            android:id="@+id/mute_button"
             android:background="@drawable/mute"
             android:layout_width="@dimen/menu_icon_width"
-            android:layout_height="@dimen/menu_icon_width"
-            android:id="@+id/mute_button" />
+            android:layout_height="@dimen/menu_icon_width" />
 
     </LinearLayout>
 </FrameLayout>

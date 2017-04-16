@@ -51,17 +51,17 @@ public class GameActivity extends Activity implements SensorEventListener {
             float x = values[0];
             float y = values[1];
             float z = values[2];
-            Log.i(TAG, "Accelerometer: x=" + x + ", y=" + y + ", z=" + z);
 
             float accelerationSquareRoot =
-                    (x * x + y * y + z * z) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
+                    (x * x + y * y) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
             if (Math.abs(y) > Math.abs(x)) {
                 float deltaX = Math.min(Math.abs(y), GameUtils.maxVel);
                 mGameView.pikachu.setVelX(mGameView.pikachu.getVelX() + deltaX);
                 mGameView.y = y;
+                Log.i(TAG, "Accelerometer: x=" + x + ", y=" + y + ", z=" + z + ", acc=" + accelerationSquareRoot);
             }
-            if (accelerationSquareRoot >= GameUtils.threshold &&
-                    Math.abs(x) > Math.abs(y) && Math.abs(x) > GameUtils.threshold) {
+            if (Math.abs(x - SensorManager.GRAVITY_EARTH) > GameUtils.threshold
+                    && Math.abs(x) > GameUtils.threshold && Math.abs(x) > Math.abs(y)) {
                 float deltaY = Math.min(Math.abs(x), GameUtils.maxVel);
                 mGameView.pikachu.setVelY(mGameView.pikachu.getVelY() + deltaY);
                 mGameView.setJumpTrue();
@@ -100,7 +100,7 @@ public class GameActivity extends Activity implements SensorEventListener {
         super.onResume();
         mGameView.resume();
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_NORMAL);
+                SensorManager.SENSOR_STATUS_ACCURACY_HIGH);
     }
 
     @Override
