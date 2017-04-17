@@ -14,46 +14,52 @@ public class MainFragment extends Fragment {
 
     private static final String TAG = MainFragment.class.getSimpleName();
     private AlertDialog mDialog;
+    View continueButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         View newButton = rootView.findViewById(R.id.new_button);
-        View continueButton = rootView.findViewById(R.id.continue_button);
+        continueButton = rootView.findViewById(R.id.continue_button);
         View scoreButton = rootView.findViewById(R.id.score_button);
+
 
         newButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            // 1. Set game_mode.xml to alert dialog builder
-            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View modeView = layoutInflater.inflate(R.layout.game_mode, null);
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-            dialogBuilder.setView(modeView);
+                // 1. Set game_mode.xml to alert dialog builder
+                LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+                View modeView = layoutInflater.inflate(R.layout.game_mode, null);
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+                dialogBuilder.setView(modeView);
 
-            // 2. Mode Button
-            Button easyButton = (Button) modeView.findViewById(R.id.easy_button);
-            easyButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    GameUtils.mode = GameUtils.MODE_EASY;
-                    Intent intent = new Intent(getActivity(), GameActivity.class);
-                    startActivity(intent);
-                }
-            });
-            Button hardButton = (Button) modeView.findViewById(R.id.hard_button);
-            hardButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    GameUtils.mode = GameUtils.MODE_HARD;
-                    Log.i(TAG, GameUtils.MODE_HARD);
-                    Intent intent = new Intent(getActivity(), GameActivity.class);
-                    startActivity(intent);
-                }
-            });
-            mDialog = dialogBuilder.create();
-            mDialog.show();
+                // 2. Mode Button
+                Button easyButton = (Button) modeView.findViewById(R.id.easy_button);
+                easyButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        GameUtils.mode = GameUtils.MODE_EASY;
+                        Intent intent = new Intent(getActivity(), GameActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                Button hardButton = (Button) modeView.findViewById(R.id.hard_button);
+                hardButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        GameUtils.mode = GameUtils.MODE_HARD;
+                        Log.i(TAG, GameUtils.MODE_HARD);
+                        Intent intent = new Intent(getActivity(), GameActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                mDialog = dialogBuilder.create();
+                mDialog.show();
+                System.out.println(GameUtils.getHasRestore() + "before click new game");
+                GameUtils.setHasRestore(true);
+                System.out.println(GameUtils.getHasRestore() + "after click new game");
+
             }
         });
 
@@ -83,6 +89,17 @@ public class MainFragment extends Fragment {
         super.onPause();
         if (mDialog != null) {
             mDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println(GameUtils.getHasRestore() + " in Resume");
+        if(!GameUtils.getHasRestore()) {
+            continueButton.setVisibility(View.GONE);
+        } else {
+            continueButton.setVisibility(View.VISIBLE);
         }
     }
 }

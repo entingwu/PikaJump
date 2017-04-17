@@ -61,19 +61,30 @@ public class GameActivity extends Activity implements SensorEventListener {
             float z = values[2];
 
             float accelerationSquareRoot =
-                    (x * x + y * y) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
+                    (x * x + y * y + z * z) /
+                            (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
             // Left, right
-            if (Math.abs(y) > Math.abs(x)) {
+//            if (Math.abs(y) > Math.abs(x)) {
+//                float deltaX = Math.min(Math.abs(y), GameUtils.maxVelX);
+//                mGameView.pikachu.setVelX(mGameView.pikachu.getVelX() + deltaX);
+//                mGameView.y = y;
+//                Log.i(TAG, "Accelerometer: x=" + x + ", y=" + y + ", z=" + z + ", a=" + accelerationSquareRoot);
+//
+//            }
+            //improve the jump experience for left and right movement
+            if (accelerationSquareRoot > 1) {
                 float deltaX = Math.min(Math.abs(y), GameUtils.maxVelX);
                 mGameView.pikachu.setVelX(mGameView.pikachu.getVelX() + deltaX);
                 mGameView.y = y;
                 Log.i(TAG, "Accelerometer: x=" + x + ", y=" + y + ", z=" + z + ", a=" + accelerationSquareRoot);
+
             }
             // Up
             if (accelerationSquareRoot > GameUtils.thresholdY &&
                     Math.abs(x) > GameUtils.thresholdY && Math.abs(x) > Math.abs(y)) {
                 float deltaY = Math.min(Math.abs(x), GameUtils.maxVelY);
-                mGameView.pikachu.setVelY(mGameView.pikachu.getVelY() + deltaY);
+                //increase velocity on y by increasing deltaY
+                mGameView.pikachu.setVelY(mGameView.pikachu.getVelY() + deltaY * 2);
                 mGameView.pikachu.setJumping(true);
             }
         }
@@ -89,6 +100,7 @@ public class GameActivity extends Activity implements SensorEventListener {
         } else {
             mBuilder.setMessage(String.format("Try again! Your score is: %s", GameUtils.score));
         }
+        GameUtils.setHasRestore(false);
         mBuilder.setCancelable(false);
         mBuilder.setPositiveButton(R.string.main_menu_label,
             new DialogInterface.OnClickListener() {

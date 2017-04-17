@@ -14,8 +14,10 @@ public class GameUtils {
     public static final String MODE_EASY = "EASY";
     public static final String MODE_HARD = "HARD";
     public static final String PAUSED = "Paused";
-    public static final float thresholdX = 3;
-    public static final float thresholdY = 3;
+    public static final float thresholdX = 2;
+    public static final float thresholdY = 2;
+
+    public static boolean hasRestore;
 
     // Music
     public static MediaPlayer mMediaPlayer;
@@ -74,6 +76,14 @@ public class GameUtils {
     public static Bitmap apple;
     public static Bitmap banana;
     public static Bitmap coke;
+
+    public static void setHasRestore(boolean restore) {
+        hasRestore = restore;
+    }
+
+    public static boolean getHasRestore() {
+        return hasRestore;
+    }
 
     public static void playMusic(Context context, int raw_id) {
         previousMusic = raw_id;
