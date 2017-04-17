@@ -29,21 +29,11 @@ public class GameActivity extends Activity implements SensorEventListener {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
-        // Get a Display object to access screen details
-        Display display = this.getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        GameUtils.mWidth = size.x;
-        GameUtils.mHeight = size.y;
-        GameUtils.frameWidth = (int)(GameUtils.mWidth / 2.5);
-        GameUtils.frameHeight = GameUtils.frameWidth;
-        GameUtils.dx = GameUtils.mWidth / 120;
-        GameUtils.maxVelX = GameUtils.mHeight / 15;
-        GameUtils.maxVelY = GameUtils.mHeight / 8;
+        initialGame();
         mGameView = new GameView(this);
 
         boolean restore = getIntent().getBooleanExtra(KEY_RESTORE, false);
-        Log.d("UT3", "restore = " + restore);
+        Log.d(TAG, "restore = " + restore);
         if (restore) {
             String gameData = getPreferences(MODE_PRIVATE).getString(PREF_RESTORE, null);
             if (gameData != null) {
@@ -72,11 +62,11 @@ public class GameActivity extends Activity implements SensorEventListener {
                 float deltaX = Math.min(Math.abs(y), GameUtils.maxVelX);
                 mGameView.pikachu.setVelX(mGameView.pikachu.getVelX() + deltaX);
                 mGameView.y = y;
-                Log.i(TAG, "Accelerometer: x=" + x + ", y=" + y + ", z=" + z + ", acc=" + accelerationSquareRoot);
+                Log.i(TAG, "Accelerometer: x=" + x + ", y=" + y + ", z=" + z + ", a=" + accelerationSquareRoot);
             }
             // Up
-            if (Math.abs(x - SensorManager.GRAVITY_EARTH) > GameUtils.thresholdY
-                    && Math.abs(x) > GameUtils.thresholdY && Math.abs(x) > Math.abs(y)) {
+            if (accelerationSquareRoot > GameUtils.thresholdY &&
+                    Math.abs(x) > GameUtils.thresholdY && Math.abs(x) > Math.abs(y)) {
                 float deltaY = Math.min(Math.abs(x), GameUtils.maxVelY);
                 mGameView.pikachu.setVelY(mGameView.pikachu.getVelY() + deltaY);
                 mGameView.pikachu.setJumping(true);
@@ -89,19 +79,48 @@ public class GameActivity extends Activity implements SensorEventListener {
 
     public void win() {
         /** 1. Display Dialog */
-        mBuilder.setMessage(String.format("Good job! Your score is: %s", GameUtils.score));
+        if (GameUtils.WIN) {
+            mBuilder.setMessage(String.format("Good job! Your score is: %s", GameUtils.score));
+        } else {
+            mBuilder.setMessage(String.format("Try again! Your score is: %s", GameUtils.score));
+        }
         mBuilder.setCancelable(false);
         mBuilder.setPositiveButton(R.string.main_menu_label,
             new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    Log.i(TAG, "Pika Jump Winner");
+                    Log.i(TAG, "Pika Jump Close");
                     finish();
                     onBackPressed();
                 }
             });
         mBuilder.show();
         GameUtils.score = 0;
+    }
+
+    private void initialGame() {
+        // Get a Display object to access screen details
+        Display display = this.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        GameUtils.mWidth = size.x;
+        GameUtils.mHeight = size.y;
+        GameUtils.frameWidth = (int)(GameUtils.mWidth / 2.5);
+        GameUtils.frameHeight = GameUtils.frameWidth;
+        GameUtils.dx = GameUtils.mWidth / 120;
+        GameUtils.maxVelX = GameUtils.mHeight / 15;
+        GameUtils.maxVelY = GameUtils.mHeight / 8;
+
+        // Game Data
+        GameUtils.WIN = true;
+        GameUtils.score = 0;
+        GameUtils.apples = 0;
+        GameUtils.bananas = 0;
+        GameUtils.cokes = 0;
+        GameUtils.jumps = 0;
+        GameUtils.totalSec = 60;
+        GameUtils.visibleFruit = 0;
+        GameUtils.brokenFruits = 0;
     }
 
     public void finish() {

@@ -67,4 +67,8 @@ public class Fruit {
     public int getFruitScore() {
         return fruitScore;
     }
+
+    public int getHeight() {
+        return height;
+    }
 }
