@@ -72,6 +72,7 @@ public class GameUtils {
     public static int jumps;
 
     // Bitmap
+    public static Bitmap bitmapPause;
     public static Bitmap bitmapRestart;
     public static Bitmap apple;
     public static Bitmap banana;

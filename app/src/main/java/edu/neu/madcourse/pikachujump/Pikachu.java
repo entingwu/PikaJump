@@ -45,13 +45,13 @@ public class Pikachu {
     public void moveLeft(float value) {
         Log.i(TAG,"Left Jump." + mVelX);
         mPosX += value * 2;
-        mPosX = Math.max(30, mPosX);
+        mPosX = Math.max(mWidth * 0.1f, mPosX);
     }
 
     public void moveRight(float value) {
         Log.i(TAG,"Right Jump." + mVelX);
         mPosX += value * 2;
-        mPosX = Math.min(mWidth - 30, mPosX);
+        mPosX = Math.min(mWidth * 0.9f, mPosX);
     }
 
     public float getPosX() {

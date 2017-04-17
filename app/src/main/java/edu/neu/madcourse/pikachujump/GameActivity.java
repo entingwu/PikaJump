@@ -5,8 +5,6 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.os.Bundle;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -63,15 +61,8 @@ public class GameActivity extends Activity implements SensorEventListener {
             float accelerationSquareRoot =
                     (x * x + y * y + z * z) /
                             (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
-            // Left, right
-//            if (Math.abs(y) > Math.abs(x)) {
-//                float deltaX = Math.min(Math.abs(y), GameUtils.maxVelX);
-//                mGameView.pikachu.setVelX(mGameView.pikachu.getVelX() + deltaX);
-//                mGameView.y = y;
-//                Log.i(TAG, "Accelerometer: x=" + x + ", y=" + y + ", z=" + z + ", a=" + accelerationSquareRoot);
-//
-//            }
-            //improve the jump experience for left and right movement
+            // Left, right: improve the jump experience for left and right movement
+            // if (Math.abs(y) > Math.abs(x))
             if (accelerationSquareRoot > 1) {
                 float deltaX = Math.min(Math.abs(y), GameUtils.maxVelX);
                 mGameView.pikachu.setVelX(mGameView.pikachu.getVelX() + deltaX);
@@ -80,7 +71,7 @@ public class GameActivity extends Activity implements SensorEventListener {
 
             }
             // Up
-            if (accelerationSquareRoot > GameUtils.thresholdY &&
+            if (accelerationSquareRoot >= GameUtils.thresholdY / 2 &&
                     Math.abs(x) > GameUtils.thresholdY && Math.abs(x) > Math.abs(y)) {
                 float deltaY = Math.min(Math.abs(x), GameUtils.maxVelY);
                 //increase velocity on y by increasing deltaY
@@ -135,9 +126,13 @@ public class GameActivity extends Activity implements SensorEventListener {
         GameUtils.apple = BitmapFactory.decodeResource(getResources(), R.drawable.apple);
         GameUtils.banana = BitmapFactory.decodeResource(getResources(), R.drawable.banana);
         GameUtils.coke = BitmapFactory.decodeResource(getResources(), R.drawable.coke);
+
         GameUtils.bitmapRestart = BitmapFactory.decodeResource(getResources(), R.drawable.restart);
         GameUtils.bitmapRestart = Bitmap.createScaledBitmap(GameUtils.bitmapRestart,
                 GameUtils.mWidth / 12, GameUtils.mWidth / 12, false);
+        GameUtils.bitmapPause = BitmapFactory.decodeResource(getResources(), R.drawable.pause);
+        GameUtils.bitmapPause = Bitmap.createScaledBitmap(GameUtils.bitmapPause,
+                GameUtils.mWidth / 15, GameUtils.mWidth / 15, false);
 
         // Game Data
         GameUtils.WIN = true;

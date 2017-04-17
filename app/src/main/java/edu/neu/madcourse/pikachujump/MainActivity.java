@@ -19,21 +19,26 @@ public class MainActivity extends AppCompatActivity {
         muteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (GameUtils.isMusicPlaying) {
-                    GameUtils.isMusicPlaying = false;
-                    view.setBackgroundResource(R.drawable.onmusic);
-                    GameUtils.pauseMusic();
-                } else {
-                    GameUtils.isMusicPlaying = true;
-                    view.setBackgroundResource(R.drawable.mute);
-                    GameUtils.playMusic(getApplicationContext(), R.raw.bgm);
-                }
+            if (GameUtils.isMusicPlaying) {
+                GameUtils.isMusicPlaying = false;
+                view.setBackgroundResource(R.drawable.onmusic);
+                GameUtils.pauseMusic();
+            } else {
+                GameUtils.isMusicPlaying = true;
+                view.setBackgroundResource(R.drawable.mute);
+                GameUtils.playMusic(getApplicationContext(), R.raw.bgm);
+            }
             }
         });
     }
 
     public void displayInstruction(View view) {
         Intent intent = new Intent(this, InstructionActivity.class);
+        startActivity(intent);
+    }
+
+    public void displayLogin(View view) {
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 

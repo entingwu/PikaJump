@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
 import java.util.Random;
 
 public class GameView extends SurfaceView implements Runnable {
@@ -211,6 +212,8 @@ public class GameView extends SurfaceView implements Runnable {
                 paint.setTextSize(GameUtils.mWidth / 15);
                 canvas.drawText(GameUtils.PAUSED, GameUtils.mWidth * 0.4f, GameUtils.mHeight / 2, paint);
                 canvas.drawBitmap(GameUtils.bitmapRestart, GameUtils.mWidth * 0.47f, GameUtils.mHeight * 0.55f, paint);
+            } else {
+                //canvas.drawBitmap(GameUtils.bitmapPause, GameUtils.mWidth * 0.92f, GameUtils.mHeight * 0.82f, paint);
             }
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
@@ -286,13 +289,13 @@ public class GameView extends SurfaceView implements Runnable {
     public boolean onTouchEvent(MotionEvent motionEvent) {
         switch(motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
-//                if (!paused) {
-//                    paused = true;
-//                    pause();
-//                } else {
-//                    paused = false;
-//                    resume();
-//                }
+                /*if (!paused) {
+                    paused = true;
+                    pause();
+                } else {
+                    paused = false;
+                    resume();
+                }*/
                 break;
         }
         return true;
