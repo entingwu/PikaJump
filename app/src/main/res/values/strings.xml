@@ -22,7 +22,6 @@
     <string name="play">Play</string>
     <string name="how_to_play">Time to Work Out</string>
     <string name="lift_up_info">Lift Up the Phone to Jump \n\n Move the Phone to Left | Right</string>
-<<<<<<< HEAD
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
@@ -37,7 +36,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-=======
 
     <!--Leader Board-->
     <string name="leader_board_text">Leader Board</string>
@@ -54,5 +52,5 @@
     <string name="fruits">Fruits</string>
     <string name="cokes">Cokes</string>
     <string name="date">Date</string>
->>>>>>> b4b0a8df792950044bbfc300220a9edbcb208137
+
 </resources>
