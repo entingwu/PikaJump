@@ -1,19 +1,30 @@
 package edu.neu.madcourse.pikachujump;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.media.MediaPlayer;
+import android.util.Log;
 
 public class GameUtils {
 
+    private static final String TAG = GameUtils.class.getSimpleName();
     public static final String DIV = ",";
     public static final String MODE_EASY = "EASY";
     public static final String MODE_HARD = "HARD";
-
+    public static final String PAUSED = "Paused";
     public static final float thresholdX = 3;
     public static final float thresholdY = 3;
+
+    // Music
+    public static MediaPlayer mMediaPlayer;
+    public static boolean isMusicPlaying = true;
     public static final float mVolume = 2f;
     public static final float mRate = 1f;
+    public static int previousMusic;
+    public static Context previousContext;
+    private static long pauseLen;
 
     // The size of the screen in pixels
     public static int mWidth;
@@ -47,13 +58,51 @@ public class GameUtils {
     public static int visibleFruit;
 
     // Game Data
+    public static final long totalTime = 30;
+    public static volatile boolean playGame;
     public static String mode = MODE_EASY;
     public static boolean WIN;
-    public static int brokenFruits;
-    public static long totalSec = 60;
+    public static long totalSec = 30;
     public static int apples;
     public static int bananas;
     public static int cokes;
     public static int score;
     public static int jumps;
+
+    // Bitmap
+    public static Bitmap bitmapRestart;
+    public static Bitmap apple;
+    public static Bitmap banana;
+    public static Bitmap coke;
+
+    public static void playMusic(Context context, int raw_id) {
+        previousMusic = raw_id;
+        previousContext = context;
+        Log.i(TAG, "PlayMusic " + isMusicPlaying);
+
+        if (isMusicPlaying) {
+            if (mMediaPlayer != null) {
+                mMediaPlayer.release();
+            }
+            mMediaPlayer = MediaPlayer.create(context, raw_id);
+            mMediaPlayer.setLooping(true);
+            mMediaPlayer.setVolume(mVolume, mVolume);
+            mMediaPlayer.start();
+        }
+    }
+
+    public static void pauseMusic() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.pause();
+            pauseLen = mMediaPlayer.getCurrentPosition();
+        }
+    }
+
+    public static void stopMusic() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.stop();
+            mMediaPlayer.reset();
+            mMediaPlayer.release();
+        }
+    }
 }

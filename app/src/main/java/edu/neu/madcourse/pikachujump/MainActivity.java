@@ -1,7 +1,6 @@
 package edu.neu.madcourse.pikachujump;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,9 +8,6 @@ import android.view.Window;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-
-    MediaPlayer mMediaPlayer;
-    boolean mute = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,14 +19,14 @@ public class MainActivity extends AppCompatActivity {
         muteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!mute) {
-                    mute = true;
+                if (GameUtils.isMusicPlaying) {
+                    GameUtils.isMusicPlaying = false;
                     view.setBackgroundResource(R.drawable.onmusic);
-                    pause();
+                    GameUtils.pauseMusic();
                 } else {
-                    mute = false;
+                    GameUtils.isMusicPlaying = true;
                     view.setBackgroundResource(R.drawable.mute);
-                    play();
+                    GameUtils.playMusic(getApplicationContext(), R.raw.bgm);
                 }
             }
         });
@@ -44,25 +40,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        pause();
+        GameUtils.pauseMusic();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        play();
-    }
-
-    public void pause() {
-        mMediaPlayer.stop();
-        mMediaPlayer.reset();
-        mMediaPlayer.release();
-    }
-
-    public void play() {
-        mMediaPlayer = MediaPlayer.create(this, R.raw.bgm);
-        mMediaPlayer.setVolume(0.5f, 0.5f);
-        mMediaPlayer.setLooping(true);
-        mMediaPlayer.start();
+        GameUtils.playMusic(this, R.raw.bgm);
     }
 }

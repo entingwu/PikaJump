@@ -2,7 +2,11 @@ package edu.neu.madcourse.pikachujump;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -45,6 +49,7 @@ public class GameActivity extends Activity implements SensorEventListener {
         Log.i(TAG, "Initialize Sensor Manager");
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mBuilder = new AlertDialog.Builder(this);
+        GameUtils.playMusic(this, R.raw.pika_bgm);
     }
 
     @Override
@@ -111,6 +116,17 @@ public class GameActivity extends Activity implements SensorEventListener {
         GameUtils.maxVelX = GameUtils.mHeight / 15;
         GameUtils.maxVelY = GameUtils.mHeight / 8;
 
+        // Bitmap
+        GameUtils.bitmapPika = BitmapFactory.decodeResource(getResources(), R.drawable.pika_sprite_8_384);
+        GameUtils.bitmapPika = Bitmap.createScaledBitmap(GameUtils.bitmapPika,
+                GameUtils.frameWidth * GameUtils.frameCount, GameUtils.frameHeight, false);
+        GameUtils.apple = BitmapFactory.decodeResource(getResources(), R.drawable.apple);
+        GameUtils.banana = BitmapFactory.decodeResource(getResources(), R.drawable.banana);
+        GameUtils.coke = BitmapFactory.decodeResource(getResources(), R.drawable.coke);
+        GameUtils.bitmapRestart = BitmapFactory.decodeResource(getResources(), R.drawable.restart);
+        GameUtils.bitmapRestart = Bitmap.createScaledBitmap(GameUtils.bitmapRestart,
+                GameUtils.mWidth / 12, GameUtils.mWidth / 12, false);
+
         // Game Data
         GameUtils.WIN = true;
         GameUtils.score = 0;
@@ -118,9 +134,8 @@ public class GameActivity extends Activity implements SensorEventListener {
         GameUtils.bananas = 0;
         GameUtils.cokes = 0;
         GameUtils.jumps = 0;
-        GameUtils.totalSec = 60;
+        GameUtils.totalSec = GameUtils.totalTime;
         GameUtils.visibleFruit = 0;
-        GameUtils.brokenFruits = 0;
     }
 
     public void finish() {

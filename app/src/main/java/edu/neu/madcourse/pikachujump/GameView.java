@@ -2,8 +2,6 @@ package edu.neu.madcourse.pikachujump;
 
 import android.content.Context;
 import android.graphics.Paint;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -24,12 +22,8 @@ public class GameView extends SurfaceView implements Runnable {
     public Thread gameThread = null;
     // Need surfaceHolder when use Paint and Canvas in a thread
     private SurfaceHolder surfaceHolder;
-    private volatile boolean playGame;
     private Canvas canvas;
     private Paint paint;
-    private Bitmap apple;
-    private Bitmap banana;
-    private Bitmap coke;
 
     // Pikachu
     public Pikachu pikachu;
@@ -60,15 +54,8 @@ public class GameView extends SurfaceView implements Runnable {
                                           pikachu.getPosY() - GameUtils.frameHeight / 3,
                                           pikachu.getPosX() + GameUtils.frameWidth / 2,
                                           pikachu.getPosY() + GameUtils.frameHeight / 3 * 2);
-
-        GameUtils.bitmapPika = BitmapFactory.decodeResource(getResources(), R.drawable.pika_sprite_8_384);
-        GameUtils.bitmapPika = Bitmap.createScaledBitmap(GameUtils.bitmapPika,
-                GameUtils.frameWidth * GameUtils.frameCount, GameUtils.frameHeight, false);
-        apple = BitmapFactory.decodeResource(getResources(), R.drawable.apple);
-        banana = BitmapFactory.decodeResource(getResources(), R.drawable.banana);
-        coke = BitmapFactory.decodeResource(getResources(), R.drawable.coke);
         createFruitsAndRestart();
-        initTimer(60000);
+        initTimer(GameUtils.totalTime * 1000);
 
         mSoundPool = new SoundPool(3, AudioManager.STREAM_MUSIC, 0);
         mSoundApple = mSoundPool.load(context, R.raw.sergenious_movex, 1);
@@ -118,12 +105,15 @@ public class GameView extends SurfaceView implements Runnable {
                 }
                 if (GameUtils.visibleFruit == 0) {
                     createFruitsAndRestart();
-                } else if (GameUtils.score < -10 || GameUtils.brokenFruits >= 1) {
+                }
+                if (GameUtils.cokes >= 100 && GameUtils.mode.equals(GameUtils.MODE_HARD) ||
+                        GameUtils.score < -10) {
                     pause();
                     GameUtils.WIN = false;
-                    Log.i(TAG, "Failed: broken fruits " + GameUtils.brokenFruits);
+                    Log.i(TAG, "Failed: drink cokes " + GameUtils.cokes);
                     ((GameActivity)getContext()).win();
                 }
+
             }
             @Override
             public void onFinish() {
@@ -137,7 +127,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     @Override
     public void run() {
-        while (playGame) {
+        while (GameUtils.playGame) {
             if (!paused) {
                 // Curr Time
                 long startFrameTime = System.currentTimeMillis();
@@ -160,9 +150,9 @@ public class GameView extends SurfaceView implements Runnable {
         for (int i = 0; i  < numFruits; ++i) {
             Fruit fruit = fruits[i];
             RectF pikaRect = new RectF(pikachu.getPosX() - GameUtils.mWidth / 20,
-                                       pikachu.getPosY() - GameUtils.mHeight / 10,
+                                       pikachu.getPosY() + GameUtils.mHeight / 20 * 3,
                                        pikachu.getPosX() + GameUtils.mWidth / 20,
-                                       pikachu.getPosY() + GameUtils.mHeight / 10);
+                                       pikachu.getPosY() + GameUtils.mHeight / 4);
             if (RectF.intersects(pikaRect, fruit.getFruit()) && fruit.getVisibility()) {
                 FruitType type = fruit.getFruitType();
                 if(type == FruitType.APPLE) {
@@ -195,25 +185,33 @@ public class GameView extends SurfaceView implements Runnable {
             Drawable d = getResources().getDrawable(R.drawable.background_1);
             d.setBounds(getLeft(), getTop(), getRight(), getBottom());
             d.draw(canvas);
-            paint.setColor(Color.argb(255, 255, 255, 255));
-
-            // Draw the Pikachu
-            GameUtils.whereToDraw.set(pikachu.getPosX() - GameUtils.frameWidth / 2,
-                                      pikachu.getPosY() - GameUtils.frameHeight / 3,
-                                      pikachu.getPosX() + GameUtils.frameWidth / 2,
-                                      pikachu.getPosY() + GameUtils.frameHeight / 3 * 2);
 
             // Draw dynamic visible fruits
             drawFruits();
             // Draw the score
+            paint.setColor(Color.argb(255, 255, 255, 255));
             paint.setTextSize(GameUtils.mWidth / 30);
             canvas.drawText("Score: " + GameUtils.score, 3, GameUtils.mHeight - 3, paint);
             // Draw the timer
             canvas.drawText(timerText, GameUtils.mWidth * 0.91f, GameUtils.mHeight - 3, paint);
 
+            // Draw the Pikachu
+            GameUtils.whereToDraw.set(pikachu.getPosX() - GameUtils.frameWidth / 2,
+                    pikachu.getPosY() - GameUtils.frameHeight / 3,
+                    pikachu.getPosX() + GameUtils.frameWidth / 2,
+                    pikachu.getPosY() + GameUtils.frameHeight / 3 * 2);
             // Update frameToDraw
             getCurrentFrame();
             canvas.drawBitmap(GameUtils.bitmapPika, GameUtils.frameToDraw, GameUtils.whereToDraw, paint);
+
+            // Paused Background
+            if (!GameUtils.playGame) {
+                canvas.drawColor(Color.argb(160, 4, 38, 49));
+                paint.setColor(Color.argb(255, 255, 165, 0));
+                paint.setTextSize(GameUtils.mWidth / 15);
+                canvas.drawText(GameUtils.PAUSED, GameUtils.mWidth * 0.4f, GameUtils.mHeight / 2, paint);
+                canvas.drawBitmap(GameUtils.bitmapRestart, GameUtils.mWidth * 0.47f, GameUtils.mHeight * 0.55f, paint);
+            }
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }
@@ -231,10 +229,8 @@ public class GameView extends SurfaceView implements Runnable {
                         rectF.centerY() + GameUtils.dy : rectF.centerY();
 
                 if (nextPosY > GameUtils.mHeight + fruit.getHeight()) {
-                    GameUtils.brokenFruits++;
                     GameUtils.visibleFruit--;
                     fruit.setInvisible();
-                    Log.i(TAG, "Broken: " + GameUtils.brokenFruits);
                 } else {
                     RectF newRectF = new RectF(nextPosX - rectF.width() * 0.5f,
                                                nextPosY - rectF.height() * 0.5f,
@@ -242,13 +238,13 @@ public class GameView extends SurfaceView implements Runnable {
                                                nextPosY + rectF.height() * 0.5f);
                     switch (type) {
                         case APPLE:
-                            canvas.drawBitmap(apple, null, newRectF, paint);
+                            canvas.drawBitmap(GameUtils.apple, null, newRectF, paint);
                             break;
                         case BANANA:
-                            canvas.drawBitmap(banana, null, newRectF, paint);
+                            canvas.drawBitmap(GameUtils.banana, null, newRectF, paint);
                             break;
                         case COKE:
-                            canvas.drawBitmap(coke, null, newRectF, paint);
+                            canvas.drawBitmap(GameUtils.coke, null, newRectF, paint);
                             break;
                     }
                     fruit.setFruit(newRectF);
@@ -303,22 +299,24 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void pause() {
         Log.i(TAG, "Pause Game.");
-        playGame = false;
+        GameUtils.playGame = false;
         timer.cancel();
         try {
             gameThread.join();
         } catch(InterruptedException e) {
             Log.e(TAG, "Joining thread.");
         }
+        GameUtils.pauseMusic();
     }
 
     public void resume() {
-        GameUtils.totalSec = GameUtils.totalSec <= 1 ? 60 : GameUtils.totalSec;
+        GameUtils.totalSec = GameUtils.totalSec <= 1 ? GameUtils.totalTime : GameUtils.totalSec;
         Log.i(TAG, "Resume." + GameUtils.totalSec);
-        playGame = true;
+        GameUtils.playGame = true;
         gameThread = new Thread(this);
         gameThread.start();
         initTimer(GameUtils.totalSec * 1000);
+        GameUtils.playMusic(getContext(), R.raw.pika_bgm);
     }
 
     /** totalSec, score, jumps, apples, bananas, cokes */
