@@ -7,8 +7,11 @@ import android.graphics.RectF;
 public class GameUtils {
 
     public static final String DIV = ",";
-    public static final float thresholdX = 5;
-    public static final float thresholdY = 1;
+    public static final String MODE_EASY = "EASY";
+    public static final String MODE_HARD = "HARD";
+
+    public static final float thresholdX = 3;
+    public static final float thresholdY = 3;
     public static final float mVolume = 2f;
     public static final float mRate = 1f;
 
@@ -20,6 +23,7 @@ public class GameUtils {
     public static float maxVelX = 8;
     public static float maxVelY = 20;
     public static int dx = 3;
+    public static float dy = 0.5f;
 
     // Pikachu frame
     public static Bitmap bitmapPika;
@@ -43,6 +47,9 @@ public class GameUtils {
     public static int visibleFruit;
 
     // Game Data
+    public static String mode = MODE_EASY;
+    public static boolean WIN;
+    public static int brokenFruits;
     public static long totalSec = 60;
     public static int apples;
     public static int bananas;

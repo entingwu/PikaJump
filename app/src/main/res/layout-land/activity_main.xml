@@ -40,7 +40,7 @@
             tools:layout="@layout/fragment_main" />
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -56,7 +56,15 @@
 
             <Button
                 android:id="@+id/info_button"
-                android:background="@drawable/info"
+                android:background="@drawable/instruction"
+                android:layout_width="@dimen/menu_icon_width"
+                android:layout_height="@dimen/menu_icon_width"
+                android:onClick="displayInstruction"
+                android:layout_margin="@dimen/menu_button_margin" />
+
+            <Button
+                android:id="@+id/ack_button"
+                android:background="@drawable/applause"
                 android:layout_width="@dimen/menu_icon_width"
                 android:layout_height="@dimen/menu_icon_width"
                 android:onClick="displayInstruction"

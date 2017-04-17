@@ -79,7 +79,6 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void createFruitsAndRestart() {
         numFruits = 0;
-        GameUtils.jumps = 0;
         for (int column = 0; column < 13; column++) {
             for (int row = 0; row < 4; row++) {
                 int type = random.nextInt(6);
@@ -98,7 +97,7 @@ public class GameView extends SurfaceView implements Runnable {
                 numFruits++;
             }
         }
-        Log.i(TAG, "Create visible Fruits: " + GameUtils.visibleFruit);
+        Log.i(TAG, "Recreate visible Fruits: " + GameUtils.visibleFruit);
     }
 
     public void initTimer(long leftTime) {
@@ -118,7 +117,11 @@ public class GameView extends SurfaceView implements Runnable {
                             1, 0, GameUtils.mRate);
                 }
                 if (GameUtils.visibleFruit == 0) {
+                    createFruitsAndRestart();
+                } else if (GameUtils.score < -10 || GameUtils.brokenFruits >= 1) {
                     pause();
+                    GameUtils.WIN = false;
+                    Log.i(TAG, "Failed: broken fruits " + GameUtils.brokenFruits);
                     ((GameActivity)getContext()).win();
                 }
             }
@@ -126,6 +129,7 @@ public class GameView extends SurfaceView implements Runnable {
             public void onFinish() {
                 timerText = "00:00";
                 pause();
+                GameUtils.WIN = true;
                 ((GameActivity)getContext()).win();
             }
         }.start();
@@ -156,9 +160,9 @@ public class GameView extends SurfaceView implements Runnable {
         for (int i = 0; i  < numFruits; ++i) {
             Fruit fruit = fruits[i];
             RectF pikaRect = new RectF(pikachu.getPosX() - GameUtils.mWidth / 20,
-                                       pikachu.getPosY() - GameUtils.mHeight / 20,
+                                       pikachu.getPosY() - GameUtils.mHeight / 10,
                                        pikachu.getPosX() + GameUtils.mWidth / 20,
-                                       pikachu.getPosY() + GameUtils.mHeight / 20);
+                                       pikachu.getPosY() + GameUtils.mHeight / 10);
             if (RectF.intersects(pikaRect, fruit.getFruit()) && fruit.getVisibility()) {
                 FruitType type = fruit.getFruitType();
                 if(type == FruitType.APPLE) {
@@ -220,29 +224,35 @@ public class GameView extends SurfaceView implements Runnable {
             if (fruit.getVisibility()) {
                 FruitType type = fruits[i].getFruitType();
                 RectF rectF = fruit.getFruit();
-                float nextPos = rectF.centerX() + GameUtils.dx;
-                if (nextPos > GameUtils.mWidth) {
-                    nextPos = nextPos - GameUtils.mWidth;
-                }
-                float rounded = nextPos;
-                float left = rounded - rectF.width() * 0.5f ;
-                float right = rounded + rectF.width()  * 0.5f;
-                float top = rectF.centerY() - rectF.height()  * 0.5f;
-                float bottom = rectF.centerY() + rectF.height() * 0.5f;
+                float nextPosX = rectF.centerX() + GameUtils.dx;
+                nextPosX = nextPosX > GameUtils.mWidth? nextPosX - GameUtils.mWidth : nextPosX;
+                GameUtils.dy = random.nextInt(GameUtils.mWidth / 300);
+                float nextPosY = GameUtils.mode.equals(GameUtils.MODE_HARD) ?
+                        rectF.centerY() + GameUtils.dy : rectF.centerY();
 
-                RectF newRectF = new RectF(left, top, right, bottom);
-                switch (type) {
-                    case APPLE:
-                        canvas.drawBitmap(apple, null, newRectF, paint);
-                        break;
-                    case BANANA:
-                        canvas.drawBitmap(banana, null, newRectF, paint);
-                        break;
-                    case COKE:
-                        canvas.drawBitmap(coke, null, newRectF, paint);
-                        break;
+                if (nextPosY > GameUtils.mHeight + fruit.getHeight()) {
+                    GameUtils.brokenFruits++;
+                    GameUtils.visibleFruit--;
+                    fruit.setInvisible();
+                    Log.i(TAG, "Broken: " + GameUtils.brokenFruits);
+                } else {
+                    RectF newRectF = new RectF(nextPosX - rectF.width() * 0.5f,
+                                               nextPosY - rectF.height() * 0.5f,
+                                               nextPosX + rectF.width() * 0.5f,
+                                               nextPosY + rectF.height() * 0.5f);
+                    switch (type) {
+                        case APPLE:
+                            canvas.drawBitmap(apple, null, newRectF, paint);
+                            break;
+                        case BANANA:
+                            canvas.drawBitmap(banana, null, newRectF, paint);
+                            break;
+                        case COKE:
+                            canvas.drawBitmap(coke, null, newRectF, paint);
+                            break;
+                    }
+                    fruit.setFruit(newRectF);
                 }
-                fruit.setFruit(newRectF);
             }
         }
     }
