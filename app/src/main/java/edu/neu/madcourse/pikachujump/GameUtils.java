@@ -48,4 +48,5 @@ public class GameUtils {
     public static int bananas;
     public static int cokes;
     public static int score;
+    public static int jumps;
 }

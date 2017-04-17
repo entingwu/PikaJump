@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_leader_board"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.neu.madcourse.pikachujump.LeaderBoardActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background_leaderboard"
+        android:contentDescription="@string/leader_board_label" />
+
+    <!--1. LEADER BOARD-->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/dividerVertical"
+            style="?android:buttonBarStyle">
+            <TextView
+                android:text="@string/leader_board_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/orange_color"
+                android:textStyle="bold"
+                android:id="@+id/textView_leaderboard"
+                android:padding="@dimen/menu_space" />
+
+            <Button
+                android:text="@string/button_label_sort_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:textColor="@color/orange_color"
+                android:textStyle="bold"
+                android:onClick="orderByTotalScoreLeaderBoard"
+                android:id="@+id/button_leader_board_sort_score"/>
+
+            <Button
+                android:text="@string/button_label_sort_fruits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:textColor="@color/orange_color"
+                android:textStyle="bold"
+                android:onClick="orderByWordScoreLeaderBoard"
+                android:id="@+id/button_leader_board_sort_word"/>
+        </LinearLayout>
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableRow
+                android:id="@+id/tableRow_head"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:gravity="center_horizontal"
+                    android:layout_column="1"
+                    android:padding="10dp"
+                    android:text="@string/username" />
+
+                <TextView
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:gravity="center_horizontal"
+                    android:layout_column="2"
+                    android:padding="10dp"
+                    android:text="@string/score" />
+
+                <TextView
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:gravity="center_horizontal"
+                    android:layout_column="3"
+                    android:padding="10dp"
+                    android:text="@string/fruits" />
+
+                <TextView
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:gravity="center_horizontal"
+                    android:layout_column="4"
+                    android:padding="10dp"
+                    android:text="@string/cokes" />
+
+                <TextView
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:gravity="center_horizontal"
+                    android:layout_column="5"
+                    android:padding="10dp"
+                    android:text="@string/date" />
+            </TableRow>
+            <View
+                android:layout_height="2dip"
+                android:background="#FFffffff" />
+
+            <ListView
+                android:id="@+id/leaderBoard_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </ListView>
+        </TableLayout>
+    </LinearLayout>
+</FrameLayout>
