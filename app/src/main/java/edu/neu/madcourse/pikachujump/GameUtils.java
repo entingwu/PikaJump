@@ -18,6 +18,7 @@ public class GameUtils {
     public static final float thresholdY = 2;
 
     public static boolean hasRestore;
+    public static boolean isLogedIn;
 
     // Music
     public static MediaPlayer mMediaPlayer;
@@ -84,6 +85,13 @@ public class GameUtils {
 
     public static boolean getHasRestore() {
         return hasRestore;
+    }
+
+    public static boolean getIsLogedIn() {
+        return isLogedIn;
+    }
+    public static void setIsLogedIn(boolean value) {
+        isLogedIn = value;
     }
 
     public static void playMusic(Context context, int raw_id) {

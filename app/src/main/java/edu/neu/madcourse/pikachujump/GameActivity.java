@@ -71,7 +71,7 @@ public class GameActivity extends Activity implements SensorEventListener {
 
             }
             // Up
-            if (accelerationSquareRoot >= GameUtils.thresholdY / 2 &&
+            if (accelerationSquareRoot >= GameUtils.thresholdY  &&
                     Math.abs(x) > GameUtils.thresholdY && Math.abs(x) > Math.abs(y)) {
                 float deltaY = Math.min(Math.abs(x), GameUtils.maxVelY);
                 //increase velocity on y by increasing deltaY

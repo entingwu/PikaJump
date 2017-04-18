@@ -8,14 +8,6 @@
     tools:context="edu.neu.madcourse.pikachujump.LoginActivity">
 
     <!-- Login progress -->
-    <ProgressBar
-        android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone" />
-
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
@@ -37,8 +29,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:singleLine="true" />
+                    android:maxLines="1" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -55,20 +46,46 @@
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true" />
+                    android:maxLines="1" />
 
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/email_sign_in_button"
-                style="@style/MenuButtonStyle"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/action_sign_in"
-                android:textStyle="bold"/>
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <Button
+                    android:id="@+id/email_sign_in_button"
+                    style="@style/MenuButtonStyle"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/action_sign_in"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:id="@+id/email_create_account"
+                    style="@style/MenuButtonStyle"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/action_Register"
+                    android:layout_weight="1"
+                    android:layout_width="0dp" />
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/login_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
+
 </LinearLayout>

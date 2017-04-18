@@ -15,6 +15,11 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
+        if(!GameUtils.getIsLogedIn()) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+
         Button muteButton = (Button) findViewById(R.id.mute_button);
         muteButton.setOnClickListener(new View.OnClickListener() {
             @Override
