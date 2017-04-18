@@ -71,16 +71,20 @@ public class GameView extends SurfaceView implements Runnable {
             for (int row = 0; row < 4; row++) {
                 int type = random.nextInt(6);
                 if (type == 0 || type == 1) {// apple
-                    fruits[numFruits] = new Fruit(row, column, GameUtils.mWidth, GameUtils.mHeight, FruitType.APPLE);
+                    fruits[numFruits] = new Fruit(row, column, GameUtils.mWidth,
+                            GameUtils.mHeight, FruitType.APPLE);
                     GameUtils.visibleFruit++;
                 } else if (type == 2) {// banana
-                    fruits[numFruits] = new Fruit(row, column, GameUtils.mWidth, GameUtils.mHeight, FruitType.BANANA);
+                    fruits[numFruits] = new Fruit(row, column, GameUtils.mWidth,
+                            GameUtils.mHeight, FruitType.BANANA);
                     GameUtils.visibleFruit++;
                 } else if (type == 3) {// coke
-                    fruits[numFruits] = new Fruit(row, column, GameUtils.mWidth, GameUtils.mHeight, FruitType.COKE);
+                    fruits[numFruits] = new Fruit(row, column, GameUtils.mWidth,
+                            GameUtils.mHeight, FruitType.COKE);
                     GameUtils.visibleFruit++;
                 } else {// invisible
-                    fruits[numFruits] = new Fruit(row, column, GameUtils.mWidth, GameUtils.mHeight, FruitType.INVISIBLE);
+                    fruits[numFruits] = new Fruit(row, column, GameUtils.mWidth,
+                            GameUtils.mHeight, FruitType.INVISIBLE);
                 }
                 numFruits++;
             }
@@ -210,10 +214,13 @@ public class GameView extends SurfaceView implements Runnable {
                 canvas.drawColor(Color.argb(160, 4, 38, 49));
                 paint.setColor(Color.argb(255, 255, 165, 0));
                 paint.setTextSize(GameUtils.mWidth / 15);
-                canvas.drawText(GameUtils.PAUSED, GameUtils.mWidth * 0.4f, GameUtils.mHeight / 2, paint);
-                canvas.drawBitmap(GameUtils.bitmapRestart, GameUtils.mWidth * 0.47f, GameUtils.mHeight * 0.55f, paint);
+                canvas.drawText(GameUtils.PAUSED, GameUtils.mWidth * 0.4f,
+                        GameUtils.mHeight / 2, paint);
+                canvas.drawBitmap(GameUtils.bitmapRestart, GameUtils.mWidth * 0.47f,
+                        GameUtils.mHeight * 0.55f, paint);
             } else {
-                //canvas.drawBitmap(GameUtils.bitmapPause, GameUtils.mWidth * 0.92f, GameUtils.mHeight * 0.82f, paint);
+                //canvas.drawBitmap(GameUtils.bitmapPause, GameUtils.mWidth * 0.92f,
+                // GameUtils.mHeight * 0.82f, paint);
             }
             surfaceHolder.unlockCanvasAndPost(canvas);
         }

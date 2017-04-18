@@ -25,6 +25,8 @@ public class GameActivity extends Activity implements SensorEventListener {
     private SensorManager mSensorManager;
     private AlertDialog.Builder mBuilder;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -67,7 +69,8 @@ public class GameActivity extends Activity implements SensorEventListener {
                 float deltaX = Math.min(Math.abs(y), GameUtils.maxVelX);
                 mGameView.pikachu.setVelX(mGameView.pikachu.getVelX() + deltaX);
                 mGameView.y = y;
-                Log.i(TAG, "Accelerometer: x=" + x + ", y=" + y + ", z=" + z + ", a=" + accelerationSquareRoot);
+                Log.i(TAG, "Accelerometer: x=" + x + ", y=" + y + ", z=" + z + ", a="
+                        + accelerationSquareRoot);
 
             }
             // Up
@@ -120,7 +123,8 @@ public class GameActivity extends Activity implements SensorEventListener {
         GameUtils.maxVelY = GameUtils.mHeight / 8;
 
         // Bitmap
-        GameUtils.bitmapPika = BitmapFactory.decodeResource(getResources(), R.drawable.pika_sprite_8_384);
+        GameUtils.bitmapPika = BitmapFactory.decodeResource(getResources(),
+                R.drawable.pika_sprite_8_384);
         GameUtils.bitmapPika = Bitmap.createScaledBitmap(GameUtils.bitmapPika,
                 GameUtils.frameWidth * GameUtils.frameCount, GameUtils.frameHeight, false);
         GameUtils.apple = BitmapFactory.decodeResource(getResources(), R.drawable.apple);
@@ -155,7 +159,8 @@ public class GameActivity extends Activity implements SensorEventListener {
         Log.i(TAG, "onResume");
         super.onResume();
         mGameView.resume();
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+        mSensorManager.registerListener(this, mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_STATUS_ACCURACY_HIGH);
     }
 

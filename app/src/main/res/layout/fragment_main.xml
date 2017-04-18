@@ -10,6 +10,14 @@
     android:padding="@dimen/menu_button_padding"
     tools:context="edu.neu.madcourse.pikachujump.MainFragment">
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editTextUsername"
+        android:hint="@string/usernameHint"/>
+
     <Button
         android:id="@+id/continue_button"
         android:text="@string/continue_label"

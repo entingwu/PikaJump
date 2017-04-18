@@ -2,13 +2,17 @@ package edu.neu.madcourse.pikachujump;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class MainFragment extends Fragment {
 
@@ -23,6 +27,7 @@ public class MainFragment extends Fragment {
         View newButton = rootView.findViewById(R.id.new_button);
         continueButton = rootView.findViewById(R.id.continue_button);
         View scoreButton = rootView.findViewById(R.id.score_button);
+        EditText editText = (EditText) rootView.findViewById(R.id.editTextUsername);
 
 
         newButton.setOnClickListener(new View.OnClickListener() {
@@ -56,9 +61,7 @@ public class MainFragment extends Fragment {
                 });
                 mDialog = dialogBuilder.create();
                 mDialog.show();
-                System.out.println(GameUtils.getHasRestore() + "before click new game");
                 GameUtils.setHasRestore(true);
-                System.out.println(GameUtils.getHasRestore() + "after click new game");
 
             }
         });
@@ -79,6 +82,28 @@ public class MainFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String username = s.toString();
+                Log.d(TAG, username);
+                GameUtils.setUsername(username);
+            }
+
+        });
+
+
 
         // Inflate the layout for this fragment
         return rootView;

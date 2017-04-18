@@ -1,5 +1,7 @@
 package edu.neu.madcourse.pikachujump;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +10,7 @@ import android.view.Window;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
+    private AlertDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,12 +18,14 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
-        if(!GameUtils.getIsLogedIn()) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        }
+//        if(!GameUtils.getIsLogedIn()) {
+//            Intent intent = new Intent(this, LoginActivity.class);
+//            startActivity(intent);
+//        }
 
         Button muteButton = (Button) findViewById(R.id.mute_button);
+        Button acknowledgeButton = (Button) findViewById(R.id.ack_button);
+
         muteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -35,6 +40,25 @@ public class MainActivity extends AppCompatActivity {
             }
             }
         });
+
+        acknowledgeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
+                builder1.setMessage(R.string.acknowledge_text);
+                builder1.setCancelable(false);
+                builder1.setPositiveButton(R.string.ok_label,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // nothing
+                            }
+                        });
+                mDialog = builder1.show();
+            }
+        });
+
+
     }
 
     public void displayInstruction(View view) {
@@ -42,10 +66,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void displayLogin(View view) {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-    }
 
     @Override
     protected void onPause() {

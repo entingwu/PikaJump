@@ -34,9 +34,7 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+
 
     <!--Leader Board-->
     <string name="leader_board_text">Leader Board</string>
@@ -53,5 +51,17 @@
     <string name="fruits">Fruits</string>
     <string name="cokes">Cokes</string>
     <string name="date">Date</string>
+
+
+    <string name ="usernameHint">Enter username</string>
+    <string name="acknowledge_text">
+        We cannot complete this final project without help from Dr.Adrienne H. Slaughter \n\n\
+        Also Thanks the feedback of project presentation from classmates \n\n\
+        Images Source:www.pokemon.com \n\
+        Code Source:https://github.com/firebase/quickstart-android \n\
+        Code Source:http://stackoverflow.com \n\
+        Copyright: Nintendo Co., Ltd. \n\
+    </string>
+    <string name="ok_label">OK</string>
 
 </resources>

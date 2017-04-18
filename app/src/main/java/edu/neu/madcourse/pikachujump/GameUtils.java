@@ -19,6 +19,7 @@ public class GameUtils {
 
     public static boolean hasRestore;
     public static boolean isLogedIn;
+    public static String username;
 
     // Music
     public static MediaPlayer mMediaPlayer;
@@ -92,6 +93,12 @@ public class GameUtils {
     }
     public static void setIsLogedIn(boolean value) {
         isLogedIn = value;
+    }
+    public static void setUsername(String name) {
+        username = name;
+    }
+    public static String getUsername() {
+        return username;
     }
 
     public static void playMusic(Context context, int raw_id) {
