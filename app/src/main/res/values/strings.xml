@@ -64,4 +64,18 @@
     </string>
     <string name="ok_label">OK</string>
 
+    <!--Game Report-->
+    <string name="reportTitile">Game Report</string>
+    <string name="recoredDateTime">DateTime: </string>
+    <string name="congratulation">Excellent! You did a great job!</string>
+    <string name="gameScore">Score: </string>
+    <string name="totalJumps">Total Jumps: </string>
+    <string name="appleEaten">The number of Apple you collected: </string>
+    <string name="bananaEaten">The number of Banana you collected: </string>
+    <string name="cokeEaten">The number of Coke you collected: </string>
+    <string name="enjoyText">Hope you enjoy this game!</string>
+
+
+
+
 </resources>

@@ -20,6 +20,7 @@ public class GameUtils {
     public static boolean hasRestore;
     public static boolean isLogedIn;
     public static String username;
+    public static String currentDataTime;
 
     // Music
     public static MediaPlayer mMediaPlayer;
@@ -62,7 +63,7 @@ public class GameUtils {
     public static int visibleFruit;
 
     // Game Data
-    public static final long totalTime = 30;
+    public static final long totalTime = 10;
     public static volatile boolean playGame;
     public static String mode = MODE_EASY;
     public static boolean WIN;
@@ -99,6 +100,12 @@ public class GameUtils {
     }
     public static String getUsername() {
         return username;
+    }
+    public static void setCurrentDataTime(String dataTime) {
+        currentDataTime = dataTime;
+    }
+    public static String getCurrentDataTime() {
+        return currentDataTime;
     }
 
     public static void playMusic(Context context, int raw_id) {

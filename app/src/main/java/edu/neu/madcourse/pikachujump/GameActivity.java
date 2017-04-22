@@ -16,6 +16,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.util.Log;
 
+import java.util.Calendar;
+
 public class GameActivity extends Activity implements SensorEventListener {
 
     public static final String TAG = "GameActivity";
@@ -90,7 +92,9 @@ public class GameActivity extends Activity implements SensorEventListener {
     public void win() {
         /** 1. Display Dialog */
         if (GameUtils.WIN) {
-            mBuilder.setMessage(String.format("Good job! Your score is: %s", GameUtils.score));
+            mBuilder.setTitle(R.string.reportTitile);
+            mBuilder.setMessage(generateReport());
+
         } else {
             mBuilder.setMessage(String.format("Try again! Your score is: %s", GameUtils.score));
         }
@@ -107,6 +111,21 @@ public class GameActivity extends Activity implements SensorEventListener {
             });
         mBuilder.show();
         GameUtils.score = 0;
+    }
+
+    public String generateReport() {
+        String mydate = java.text.DateFormat.getDateTimeInstance().
+                format(Calendar.getInstance().getTime());
+        GameUtils.setCurrentDataTime(mydate);
+
+        String result = getResources().getString(R.string.recoredDateTime)
+                        + mydate + "\n"
+                        + getResources().getString(R.string.totalJumps) + " "  + GameUtils.jumps + "\n"
+                        + getResources().getString(R.string.appleEaten) + " " + GameUtils.apples + "\n"
+                        + getResources().getString(R.string.bananaEaten) + " " + GameUtils.bananas + "\n"
+                        + getResources().getString(R.string.cokeEaten) + " " + GameUtils.cokes + "\n"
+                        + "\n" + getResources().getString(R.string.enjoyText);
+        return result;
     }
 
     private void initialGame() {
