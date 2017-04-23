@@ -37,7 +37,7 @@
 
 
     <!--Leader Board-->
-    <string name="leader_board_text">Leader Board</string>
+    <string name="leader_board_text">Top Ten Winner</string>
     <string name="score_board_text">Score Board</string>
     <string name="input_username">Please Enter Your Name:</string>
     <string name="choose_game_mode">Choose Game Mode:</string>
@@ -51,6 +51,7 @@
     <string name="fruits">Fruits</string>
     <string name="cokes">Cokes</string>
     <string name="date">Date</string>
+    <string name="leaderboardLabel">Leaderboard</string>
 
 
     <string name ="usernameHint">Enter username</string>

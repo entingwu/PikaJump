@@ -35,7 +35,7 @@
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"></activity>
         <activity android:name=".LeaderBoardActivity"
-            android:label="@string/app_name" />
+            android:label="@string/leader_board_label" />
     </application>
 
 </manifest>

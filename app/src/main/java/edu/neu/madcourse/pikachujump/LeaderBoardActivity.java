@@ -53,23 +53,23 @@ public class LeaderBoardActivity extends AppCompatActivity {
         buttonSortByJump = (Button) findViewById(R.id.button_leader_board_sort_jump);
 
 
-//        buttonSortByScore.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                sortByScore(num1);
-//                num1++;
-//                adapter.notifyDataSetChanged();
-//            }
-//        });
-//
-//        buttonSortByJump.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                sortByJump(num2);
-//                num1++;
-//                adapter.notifyDataSetChanged();
-//            }
-//        });
+        buttonSortByScore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortByScore(num1);
+                num1++;
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        buttonSortByJump.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortByJump(num2);
+                num2++;
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -121,12 +121,54 @@ public class LeaderBoardActivity extends AppCompatActivity {
         return result;
     }
 
+    private void sortByScore(final int num) {
+        Collections.sort(displayedUsers, new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+                if ((num & 1) == 0) {
+                    return o1.score - o2.score;
+                } else {
+                    return o2.score - o1.score;
+                }
+            }
+        });
+        contents.clear();
+
+        for (User u : displayedUsers) {
+            String string = convertUser(u);
+            contents.add(string);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    private void sortByJump(final int num) {
+        Collections.sort(displayedUsers, new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+                if ((num & 1) == 0) {
+                    return o1.totalJumps - o2.totalJumps;
+                } else {
+                    return o2.totalJumps - o1.totalJumps;
+                }
+            }
+        });
+        contents.clear();
+
+        for (User u : displayedUsers) {
+            String string = convertUser(u);
+            contents.add(string);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+
+
     private String convertUser (User user) {
         String result;
         result = "Username: " + user.username + "\n"
                 + "TotalScore: " + user.score + "\n"
-                + "DataPlayed: " + user.datePlayed + "\n"
-                + "Number of Jumps: " + user.totalJumps + "\n";
+                + "Number of Jumps: " + user.totalJumps + "\n"
+                + "DataPlayed: " + user.datePlayed + "\n";
 
         return result;
     }
