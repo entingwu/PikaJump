@@ -17,6 +17,7 @@
 
     <dimen name="menu_width">200dp</dimen>
     <dimen name="menu_margin">40dp</dimen>
+    <dimen name="menu_button">30dp</dimen>
     <dimen name="menu_button_margin">5dp</dimen>
     <dimen name="menu_button_padding">10dp</dimen>
     <dimen name="menu_space">10dp</dimen>

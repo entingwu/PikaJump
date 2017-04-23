@@ -15,7 +15,6 @@ import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
 import android.util.Log;
-
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -31,8 +30,6 @@ public class GameActivity extends Activity implements SensorEventListener {
     private AlertDialog.Builder mBuilder;
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference mUserRef = mRootRef.child("users");
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
