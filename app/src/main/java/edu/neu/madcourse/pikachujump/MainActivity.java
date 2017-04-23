@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 public class MainActivity extends AppCompatActivity {
     private AlertDialog mDialog;
 
@@ -22,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
 //            Intent intent = new Intent(this, LoginActivity.class);
 //            startActivity(intent);
 //        }
+
+        String token = FirebaseInstanceId.getInstance().getToken();
+        GameUtils.setToken(token);
 
         Button muteButton = (Button) findViewById(R.id.mute_button);
         Button acknowledgeButton = (Button) findViewById(R.id.ack_button);

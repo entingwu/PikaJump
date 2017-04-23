@@ -16,6 +16,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.util.Log;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Calendar;
 
 public class GameActivity extends Activity implements SensorEventListener {
@@ -26,6 +29,8 @@ public class GameActivity extends Activity implements SensorEventListener {
     public GameView mGameView;
     private SensorManager mSensorManager;
     private AlertDialog.Builder mBuilder;
+    DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference mUserRef = mRootRef.child("users");
 
 
 
@@ -94,6 +99,7 @@ public class GameActivity extends Activity implements SensorEventListener {
         if (GameUtils.WIN) {
             mBuilder.setTitle(R.string.reportTitile);
             mBuilder.setMessage(generateReport());
+            updateResultToFirebase();
 
         } else {
             mBuilder.setMessage(String.format("Try again! Your score is: %s", GameUtils.score));
@@ -113,7 +119,20 @@ public class GameActivity extends Activity implements SensorEventListener {
         GameUtils.score = 0;
     }
 
-    public String generateReport() {
+    private void updateResultToFirebase() {
+        if (GameUtils.getUsername() == null || GameUtils.getUsername().length() == 0) {
+            GameUtils.setUsername("John Doe");
+        }
+
+        User user = new User(GameUtils.getToken(), GameUtils.getUsername(),
+                GameUtils.getScore(), GameUtils.getCurrentDataTime(),
+                GameUtils.getJumps());
+        String dateTime = GameUtils.getCurrentDataTime();
+        mUserRef.child(dateTime).setValue(user);
+
+    }
+
+    private String generateReport() {
         String mydate = java.text.DateFormat.getDateTimeInstance().
                 format(Calendar.getInstance().getTime());
         GameUtils.setCurrentDataTime(mydate);

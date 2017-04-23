@@ -7,6 +7,8 @@ import android.graphics.RectF;
 import android.media.MediaPlayer;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class GameUtils {
 
     private static final String TAG = GameUtils.class.getSimpleName();
@@ -21,6 +23,7 @@ public class GameUtils {
     public static boolean isLogedIn;
     public static String username;
     public static String currentDataTime;
+    public static ArrayList<User> displayedUser = new ArrayList<>();
 
     // Music
     public static MediaPlayer mMediaPlayer;
@@ -81,14 +84,16 @@ public class GameUtils {
     public static Bitmap banana;
     public static Bitmap coke;
 
+    // LeaderBoard
+    private static String token;
+
+
     public static void setHasRestore(boolean restore) {
         hasRestore = restore;
     }
-
     public static boolean getHasRestore() {
         return hasRestore;
     }
-
     public static boolean getIsLogedIn() {
         return isLogedIn;
     }
@@ -106,6 +111,27 @@ public class GameUtils {
     }
     public static String getCurrentDataTime() {
         return currentDataTime;
+    }
+    public static void setDisplayedUser(ArrayList<User> users) {
+        displayedUser = users;
+    }
+    public static ArrayList<User> getDisplayedUser() {
+        return displayedUser;
+    }
+    public static void clearDisplayedUser() {
+        displayedUser.clear();
+    }
+    public static void setToken(String mToken){
+        token = mToken;
+    }
+    public static String getToken() {
+        return token;
+    }
+    public static int getScore() {
+        return score;
+    }
+    public static int getJumps() {
+        return jumps;
     }
 
     public static void playMusic(Context context, int raw_id) {

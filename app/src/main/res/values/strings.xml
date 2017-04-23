@@ -7,7 +7,7 @@
     <string name="score_label">Scores</string>
     <string name="continue_label">Continue</string>
     <string name="new_game_label">New Game</string>
-    <string name="leader_board_label">Leader Board</string>
+    <string name="leader_board_label">Leaderboard</string>
     <string name="button_label_acknowledgement">Acknowledgment</string>
     <string name="mode_easy">Easy</string>
     <string name="mode_hard">Hard</string>
@@ -74,6 +74,9 @@
     <string name="bananaEaten">The number of Banana you collected: </string>
     <string name="cokeEaten">The number of Coke you collected: </string>
     <string name="enjoyText">Hope you enjoy this game!</string>
+
+
+    <string name="anonymous">John Doe</string>
 
 
 

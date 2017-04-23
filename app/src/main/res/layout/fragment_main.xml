@@ -30,6 +30,6 @@
 
     <Button
         android:id="@+id/score_button"
-        android:text="@string/score_label"
+        android:text="@string/leader_board_label"
         style="@style/MenuButtonStyle"/>
 </LinearLayout>
