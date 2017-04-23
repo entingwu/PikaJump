@@ -57,65 +57,7 @@
                 android:textStyle="bold"
                 android:id="@+id/button_leader_board_sort_jump"/>
         </LinearLayout>
-        <!--<TableLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent">-->
 
-            <!--<TableRow-->
-                <!--android:id="@+id/tableRow_head"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent">-->
-
-                <!--<TextView-->
-                    <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-                    <!--android:textColor="@color/colorPrimaryLight"-->
-                    <!--android:gravity="center_horizontal"-->
-                    <!--android:layout_column="1"-->
-                    <!--android:padding="10dp"-->
-                    <!--android:text="@string/username" />-->
-
-                <!--<TextView-->
-                    <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-                    <!--android:textColor="@color/colorPrimaryLight"-->
-                    <!--android:gravity="center_horizontal"-->
-                    <!--android:layout_column="2"-->
-                    <!--android:padding="10dp"-->
-                    <!--android:text="@string/score" />-->
-
-                <!--<TextView-->
-                    <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-                    <!--android:textColor="@color/colorPrimaryLight"-->
-                    <!--android:gravity="center_horizontal"-->
-                    <!--android:layout_column="3"-->
-                    <!--android:padding="10dp"-->
-                    <!--android:text="@string/fruits" />-->
-
-                <!--<TextView-->
-                    <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-                    <!--android:textColor="@color/colorPrimaryLight"-->
-                    <!--android:gravity="center_horizontal"-->
-                    <!--android:layout_column="4"-->
-                    <!--android:padding="10dp"-->
-                    <!--android:text="@string/cokes" />-->
-
-                <!--<TextView-->
-                    <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-                    <!--android:textColor="@color/colorPrimaryLight"-->
-                    <!--android:gravity="center_horizontal"-->
-                    <!--android:layout_column="5"-->
-                    <!--android:padding="10dp"-->
-                    <!--android:text="@string/date" />-->
-            <!--</TableRow>-->
-            <!--<View-->
-                <!--android:layout_height="2dip"-->
-                <!--android:background="#FFffffff" />-->
-
-            <!--<ListView-->
-                <!--android:id="@+id/leaderBoard_list"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
-            <!--</ListView>-->
-        <!--</TableLayout>-->
         <ListView
         android:id="@+id/leaderBoard_list"
         android:layout_width="match_parent"

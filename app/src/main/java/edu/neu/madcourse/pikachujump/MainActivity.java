@@ -20,10 +20,10 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
-//        if(!GameUtils.getIsLogedIn()) {
-//            Intent intent = new Intent(this, LoginActivity.class);
-//            startActivity(intent);
-//        }
+        if(!GameUtils.getIsLogedIn()) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
 
         String token = FirebaseInstanceId.getInstance().getToken();
         GameUtils.setToken(token);

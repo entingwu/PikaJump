@@ -39,6 +39,7 @@ public class MainFragment extends Fragment {
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
                 dialogBuilder.setView(modeView);
 
+
                 // 2. Mode Button
                 Button easyButton = (Button) modeView.findViewById(R.id.easy_button);
                 easyButton.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +63,6 @@ public class MainFragment extends Fragment {
                 mDialog = dialogBuilder.create();
                 mDialog.show();
                 GameUtils.setHasRestore(true);
-
             }
         });
 

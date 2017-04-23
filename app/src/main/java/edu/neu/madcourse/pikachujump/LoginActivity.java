@@ -132,14 +132,15 @@ public class LoginActivity extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
                             if (!task.isSuccessful()) {
-                                Toast toast = Toast.makeText(getApplicationContext(), "Login Failed, try again.",
-                                        Toast.LENGTH_SHORT);
+                                Toast toast = Toast.makeText(getApplicationContext(),
+                                        "Login Failed, try again.", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.TOP| Gravity.CENTER_HORIZONTAL, 0, 0);
                                 toast.show();
                             }
                         } else {
                             Intent startPage = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(startPage);
+                            GameUtils.setIsLogedIn(true);
                         }
                     }
                 });
@@ -160,10 +161,14 @@ public class LoginActivity extends AppCompatActivity {
                          * http://stackoverflow.com/questions/13988596/show-toast-above-keyboard
                          */
                         if (!task.isSuccessful()) {
-                            Toast toast = Toast.makeText(getApplicationContext(), "Email is taken, try use another email.",
-                                    Toast.LENGTH_SHORT);
+                            Toast toast = Toast.makeText(getApplicationContext(),
+                                    "Email is taken, try use another email.", Toast.LENGTH_SHORT);
                             toast.setGravity(Gravity.TOP| Gravity.CENTER_HORIZONTAL, 0, 0);
                             toast.show();
+                        } else {
+                            Intent startPage = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(startPage);
+                            GameUtils.setIsLogedIn(true);
                         }
                         // ...
                     }

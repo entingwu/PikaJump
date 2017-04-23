@@ -54,15 +54,15 @@
         android:background="?android:attr/dividerVertical"
         style="?android:buttonBarStyle" >
 
-        <Button
-            android:id="@+id/exit_button"
-            android:text="@string/exit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start|bottom"
-            android:textColor="@color/colorPrimaryLight"
-            android:onClick="backToMenu"
-            android:background="?android:attr/selectableItemBackground"/>
+        <!--<Button-->
+            <!--android:id="@+id/exit_button"-->
+            <!--android:text="@string/exit"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="start|bottom"-->
+            <!--android:textColor="@color/colorPrimaryLight"-->
+            <!--android:onClick="backToMenu"-->
+            <!--android:background="?android:attr/selectableItemBackground"/>-->
     </LinearLayout>
 
 </FrameLayout>

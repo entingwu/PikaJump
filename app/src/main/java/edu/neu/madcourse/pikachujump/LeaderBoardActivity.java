@@ -46,7 +46,8 @@ public class LeaderBoardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_leader_board);
 
         listView = (ListView) findViewById(R.id.leaderBoard_list);
-        adapter = new ArrayAdapter<>(LeaderBoardActivity.this, R.layout.leaderboard_listitem, contents);
+        adapter = new ArrayAdapter<>(LeaderBoardActivity.this,
+                R.layout.leaderboard_listitem, contents);
         listView.setAdapter(adapter);
 
         buttonSortByScore = (Button) findViewById(R.id.button_leader_board_sort_score);

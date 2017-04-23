@@ -207,7 +207,8 @@ public class GameView extends SurfaceView implements Runnable {
                     pikachu.getPosY() + GameUtils.frameHeight / 3 * 2);
             // Update frameToDraw
             getCurrentFrame();
-            canvas.drawBitmap(GameUtils.bitmapPika, GameUtils.frameToDraw, GameUtils.whereToDraw, paint);
+            canvas.drawBitmap(GameUtils.bitmapPika, GameUtils.frameToDraw,
+                    GameUtils.whereToDraw, paint);
 
             // Paused Background
             if (!GameUtils.playGame) {
