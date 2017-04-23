@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -104,9 +105,11 @@ public class GameView extends SurfaceView implements Runnable {
                 long mins = GameUtils.totalSec / 60;
                 long secs = GameUtils.totalSec % 60;
                 timerText = (mins < 10? "0" + mins : mins) + ":" + (secs < 10? "0" + secs : secs);
-                if (secs < 10) {
+                if (secs == 10) {
                     mSoundPool.play(mSoundMiss, GameUtils.mVolume, GameUtils.mVolume,
                             1, 0, GameUtils.mRate);
+                    Toast.makeText((GameActivity)getContext(), R.string.alertToastText,
+                            Toast.LENGTH_SHORT).show();
                 }
                 if (GameUtils.visibleFruit == 0) {
                     createFruitsAndRestart();

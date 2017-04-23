@@ -66,7 +66,7 @@ public class GameUtils {
     public static int visibleFruit;
 
     // Game Data
-    public static final long totalTime = 10;
+    public static final long totalTime = 45;
     public static volatile boolean playGame;
     public static String mode = MODE_EASY;
     public static boolean WIN;

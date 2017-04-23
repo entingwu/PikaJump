@@ -22,6 +22,7 @@
     <string name="play">Play</string>
     <string name="how_to_play">Time to Work Out</string>
     <string name="lift_up_info">Lift Up the Phone or real Jump to make Pikachu Jump</string>
+    <string name="totalTime">Hurry up! You have 45 seconds to jump</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
@@ -78,6 +79,7 @@
 
 
     <string name="anonymous">John Doe</string>
+    <string name="alertToastText">Hurry up! Only 10 Seconds Left</string>
 
 
 

@@ -137,7 +137,8 @@ public class GameActivity extends Activity implements SensorEventListener {
                 format(Calendar.getInstance().getTime());
         GameUtils.setCurrentDataTime(mydate);
 
-        String result = getResources().getString(R.string.recoredDateTime)
+        String result = getResources().getString(R.string.congratulation) + "\n" + "\n" +
+                        getResources().getString(R.string.recoredDateTime)
                         + mydate + "\n"
                         + getResources().getString(R.string.totalJumps) + " "  + GameUtils.jumps + "\n"
                         + getResources().getString(R.string.appleEaten) + " " + GameUtils.apples + "\n"

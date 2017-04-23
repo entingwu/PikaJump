@@ -44,6 +44,17 @@
             android:layout_margin="@dimen/menu_button_margin"
             android:background="?android:attr/selectableItemBackground"/>
 
+        <TextView
+            android:id="@+id/total_time_info"
+            android:text="@string/totalTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="@style/TextDefaultStyle"
+            android:textSize="@dimen/font_size_m"
+            android:layout_margin="@dimen/menu_button_margin"
+            android:background="?android:attr/selectableItemBackground"/>
+
     </LinearLayout>
 
     <LinearLayout
