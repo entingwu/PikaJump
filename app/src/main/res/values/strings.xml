@@ -38,7 +38,7 @@
     <string name="error_field_required">This field is required</string>
 
     <!--Leader Board-->
-    <string name="leader_board_text">Top Ten Winner</string>
+    <string name="leader_board_text">Top 10 Winners</string>
     <string name="score_board_text">Score Board</string>
     <string name="input_username">Please Enter Your Name:</string>
     <string name="choose_game_mode">Choose Game Mode:</string>
@@ -54,34 +54,31 @@
     <string name="date">Date</string>
     <string name="leaderboardLabel">Leaderboard</string>
 
-
     <string name ="usernameHint">Enter username</string>
     <string name="acknowledge_text">
-        We cannot complete this final project without help from Dr.Adrienne H. Slaughter \n\n\
-        Also Thanks the feedback of project presentation from classmates \n\n\
-        Images Source:www.pokemon.com \n\
-        Code Source:https://github.com/firebase/quickstart-android \n\
-        Code Source:http://stackoverflow.com \n\
-        Copyright: Nintendo Co., Ltd. \n\
+        We cannot complete this final project without help from Dr.Adrienne H. Slaughter. \n\n
+        Thanks the feedback of project presentation from classmates \n\n
+        Images Source:\n
+        http://www.pokestadium.com/tools/sprites \n
+        https://www.pinterest.com \n\n
+        Code Source:\n
+        https://github.com/firebase/quickstart-android \n
+        http://gamecodeschool.com/android/coding-android-sprite-sheet-animations \n
+        http://stackoverflow.com \n\n
+        Copyright: Nintendo Co., Ltd.
     </string>
     <string name="ok_label">OK</string>
 
     <!--Game Report-->
-    <string name="reportTitile">Game Report</string>
+    <string name="reportTitle">Game Report</string>
     <string name="recoredDateTime">DateTime: </string>
     <string name="congratulation">Excellent! You did a great job!</string>
     <string name="gameScore">Score: </string>
     <string name="totalJumps">Total Jumps: </string>
-    <string name="appleEaten">The number of Apple you collected: </string>
-    <string name="bananaEaten">The number of Banana you collected: </string>
-    <string name="cokeEaten">The number of Coke you collected: </string>
-    <string name="enjoyText">Hope you enjoy this game!</string>
-
-
+    <string name="appleEaten">Apple collected: </string>
+    <string name="bananaEaten">Banana collected: </string>
+    <string name="cokeEaten">Coke collected: </string>
     <string name="anonymous">John Doe</string>
     <string name="alertToastText">Hurry up! Only 10 Seconds Left</string>
-
-
-
 
 </resources>

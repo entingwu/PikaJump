@@ -1,9 +1,6 @@
 package edu.neu.madcourse.pikachujump;
 
 import com.google.firebase.database.IgnoreExtraProperties;
-/**
- * Created by emma on 4/22/17.
- */
 
 @IgnoreExtraProperties
 public class User {
@@ -12,7 +9,6 @@ public class User {
     public Integer score;
     public String datePlayed;
     public int totalJumps;
-
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -26,7 +22,6 @@ public class User {
         this.datePlayed = datePlayed;
         this.totalJumps = totalJumps;
     }
-
 
     @Override
     public String toString() {

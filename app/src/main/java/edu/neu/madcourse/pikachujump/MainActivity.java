@@ -3,6 +3,7 @@ package edu.neu.madcourse.pikachujump;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -56,21 +57,20 @@ public class MainActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                // nothing
                             }
                         });
-                mDialog = builder1.show();
+                mDialog = builder1.create();
+                mDialog.getWindow().setBackgroundDrawable(
+                        new ColorDrawable(getResources().getColor(R.color.semi_white)));
+                mDialog.show();
             }
         });
-
-
     }
 
     public void displayInstruction(View view) {
         Intent intent = new Intent(this, InstructionActivity.class);
         startActivity(intent);
     }
-
 
     @Override
     protected void onPause() {

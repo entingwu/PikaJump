@@ -15,7 +15,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
-
 import java.util.Random;
 
 public class GameView extends SurfaceView implements Runnable {
@@ -116,16 +115,17 @@ public class GameView extends SurfaceView implements Runnable {
                 }
                 if (GameUtils.cokes >= 100 && GameUtils.mode.equals(GameUtils.MODE_HARD) ||
                         GameUtils.score < -10) {
+                    GameUtils.playGame = false;
                     pause();
                     GameUtils.WIN = false;
                     Log.i(TAG, "Failed: drink cokes " + GameUtils.cokes);
                     ((GameActivity)getContext()).win();
                 }
-
             }
             @Override
             public void onFinish() {
                 timerText = "00:00";
+                GameUtils.playGame = false;
                 pause();
                 GameUtils.WIN = true;
                 ((GameActivity)getContext()).win();
@@ -158,7 +158,7 @@ public class GameView extends SurfaceView implements Runnable {
         for (int i = 0; i  < numFruits; ++i) {
             Fruit fruit = fruits[i];
             RectF pikaRect = new RectF(pikachu.getPosX() - GameUtils.mWidth / 20,
-                                       pikachu.getPosY() + GameUtils.mHeight / 20 * 3,
+                                       pikachu.getPosY() + GameUtils.mHeight / 18,
                                        pikachu.getPosX() + GameUtils.mWidth / 20,
                                        pikachu.getPosY() + GameUtils.mHeight / 4);
             if (RectF.intersects(pikaRect, fruit.getFruit()) && fruit.getVisibility()) {
@@ -214,17 +214,16 @@ public class GameView extends SurfaceView implements Runnable {
                     GameUtils.whereToDraw, paint);
 
             // Paused Background
-            if (!GameUtils.playGame) {
+            if (paused) {
                 canvas.drawColor(Color.argb(160, 4, 38, 49));
-                paint.setColor(Color.argb(255, 255, 165, 0));
-                paint.setTextSize(GameUtils.mWidth / 15);
-                canvas.drawText(GameUtils.PAUSED, GameUtils.mWidth * 0.4f,
-                        GameUtils.mHeight / 2, paint);
-                canvas.drawBitmap(GameUtils.bitmapRestart, GameUtils.mWidth * 0.47f,
-                        GameUtils.mHeight * 0.55f, paint);
-            } else {
-                //canvas.drawBitmap(GameUtils.bitmapPause, GameUtils.mWidth * 0.92f,
-                // GameUtils.mHeight * 0.82f, paint);
+                if (!GameUtils.playGame) {// exit
+                    paint.setColor(Color.argb(255, 255, 165, 0));
+                    paint.setTextSize(GameUtils.mWidth / 15);
+                    canvas.drawText(GameUtils.PAUSED, GameUtils.mWidth * 0.4f,
+                            GameUtils.mHeight / 2, paint);
+                    canvas.drawBitmap(GameUtils.bitmapRestart, GameUtils.mWidth * 0.47f,
+                            GameUtils.mHeight * 0.55f, paint);
+                }
             }
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
@@ -300,13 +299,13 @@ public class GameView extends SurfaceView implements Runnable {
     public boolean onTouchEvent(MotionEvent motionEvent) {
         switch(motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
-                /*if (!paused) {
+                if (!paused) {
                     paused = true;
                     pause();
                 } else {
                     paused = false;
                     resume();
-                }*/
+                }
                 break;
         }
         return true;

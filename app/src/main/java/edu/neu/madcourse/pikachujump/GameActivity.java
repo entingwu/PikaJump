@@ -5,12 +5,13 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.support.v7.app.AlertDialog;
+import android.app.AlertDialog;
 import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
@@ -28,6 +29,7 @@ public class GameActivity extends Activity implements SensorEventListener {
     public GameView mGameView;
     private SensorManager mSensorManager;
     private AlertDialog.Builder mBuilder;
+    private android.app.AlertDialog mDialog;
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference mUserRef = mRootRef.child("users");
 
@@ -67,7 +69,7 @@ public class GameActivity extends Activity implements SensorEventListener {
             float accelerationSquareRoot =
                     (x * x + y * y + z * z) /
                             (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
-            // Left, right: improve the jump experience for left and right movement
+            // Left, right: improve the background_jump experience for left and right movement
             // if (Math.abs(y) > Math.abs(x))
             if (accelerationSquareRoot > 1) {
                 float deltaX = Math.min(Math.abs(y), GameUtils.maxVelX);
@@ -94,10 +96,9 @@ public class GameActivity extends Activity implements SensorEventListener {
     public void win() {
         /** 1. Display Dialog */
         if (GameUtils.WIN) {
-            mBuilder.setTitle(R.string.reportTitile);
+            mBuilder.setTitle(R.string.reportTitle);
             mBuilder.setMessage(generateReport());
             updateResultToFirebase();
-
         } else {
             mBuilder.setMessage(String.format("Try again! Your score is: %s", GameUtils.score));
         }
@@ -112,7 +113,10 @@ public class GameActivity extends Activity implements SensorEventListener {
                     onBackPressed();
                 }
             });
-        mBuilder.show();
+        mDialog = mBuilder.create();
+        mDialog.getWindow().setBackgroundDrawable(
+                new ColorDrawable(getResources().getColor(R.color.semi_white)));
+        mDialog.show();
         GameUtils.score = 0;
     }
 
@@ -126,7 +130,6 @@ public class GameActivity extends Activity implements SensorEventListener {
                 GameUtils.getJumps());
         String dateTime = GameUtils.getCurrentDataTime();
         mUserRef.child(dateTime).setValue(user);
-
     }
 
     private String generateReport() {
@@ -140,8 +143,7 @@ public class GameActivity extends Activity implements SensorEventListener {
                         + getResources().getString(R.string.totalJumps) + " "  + GameUtils.jumps + "\n"
                         + getResources().getString(R.string.appleEaten) + " " + GameUtils.apples + "\n"
                         + getResources().getString(R.string.bananaEaten) + " " + GameUtils.bananas + "\n"
-                        + getResources().getString(R.string.cokeEaten) + " " + GameUtils.cokes + "\n"
-                        + "\n" + getResources().getString(R.string.enjoyText);
+                        + getResources().getString(R.string.cokeEaten) + " " + GameUtils.cokes;
         return result;
     }
 

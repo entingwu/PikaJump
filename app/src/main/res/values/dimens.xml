@@ -23,8 +23,7 @@
     <dimen name="menu_space">10dp</dimen>
     <dimen name="menu_stroke">2dp</dimen>
     <dimen name="menu_icon_width">25dp</dimen>
-    <dimen name="info_margin">60dp</dimen>
-
+    <dimen name="info_margin">90dp</dimen>
     <dimen name="fruit_board_padding">2dp</dimen>
 
 </resources>
