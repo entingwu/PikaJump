@@ -25,5 +25,6 @@
     <dimen name="menu_icon_width">25dp</dimen>
     <dimen name="info_margin">90dp</dimen>
     <dimen name="fruit_board_padding">2dp</dimen>
+    <dimen name="leader_board_margin">15dp</dimen>
 
 </resources>

@@ -60,9 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                     GameUtils.setIsLogedIn(false);
-
                 }
-
             }
         };
 
@@ -112,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signIn(String email, String password) {
-        Log.d(TAG, "signIng:" + email + password);
+        Log.d(TAG, "signIn:" + email + password);
 
         // [START sign_in_with_email]
         mAuth.signInWithEmailAndPassword(email, password)
@@ -170,4 +168,3 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 }
-
