@@ -99,8 +99,6 @@ public class GameActivity extends Activity implements SensorEventListener {
             mBuilder.setTitle(R.string.reportTitle);
             mBuilder.setMessage(generateReport());
             updateResultToFirebase();
-        } else {
-            mBuilder.setMessage(String.format("Try again! Your score is: %s", GameUtils.score));
         }
         GameUtils.setHasRestore(false);
         mBuilder.setCancelable(false);

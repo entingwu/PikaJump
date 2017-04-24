@@ -113,8 +113,8 @@ public class GameView extends SurfaceView implements Runnable {
                 if (GameUtils.visibleFruit == 0) {
                     createFruitsAndRestart();
                 }
-                if (GameUtils.cokes >= 100 && GameUtils.mode.equals(GameUtils.MODE_HARD) ||
-                        GameUtils.score < -10) {
+                if (GameUtils.cokes >= 50 && GameUtils.mode.equals(GameUtils.MODE_HARD) ||
+                        GameUtils.score < -200) {
                     GameUtils.playGame = false;
                     pause();
                     GameUtils.WIN = false;

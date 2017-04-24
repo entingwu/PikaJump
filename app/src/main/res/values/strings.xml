@@ -75,9 +75,9 @@
     <string name="congratulation">Excellent! You did a great job!</string>
     <string name="gameScore">Score: </string>
     <string name="totalJumps">Total Jumps: </string>
-    <string name="appleEaten">Apple collected: </string>
-    <string name="bananaEaten">Banana collected: </string>
-    <string name="cokeEaten">Coke collected: </string>
+    <string name="appleEaten">Apples collected: </string>
+    <string name="bananaEaten">Bananas collected: </string>
+    <string name="cokeEaten">Cokes collected: </string>
     <string name="anonymous">John Doe</string>
     <string name="alertToastText">Hurry up! Only 10 Seconds Left</string>
 

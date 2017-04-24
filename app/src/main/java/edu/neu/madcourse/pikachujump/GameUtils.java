@@ -62,7 +62,7 @@ public class GameUtils {
     public static final int totalFruits = 13 * 4;
     public static final int appleScore = 10;
     public static final int bananaScore = 30;
-    public static final int cokeScore = -10;
+    public static final int cokeScore = -20;
     public static int visibleFruit;
 
     // Game Data
@@ -86,7 +86,6 @@ public class GameUtils {
 
     // LeaderBoard
     private static String token;
-
 
     public static void setHasRestore(boolean restore) {
         hasRestore = restore;

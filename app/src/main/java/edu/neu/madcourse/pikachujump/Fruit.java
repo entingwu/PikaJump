@@ -30,7 +30,7 @@ public class Fruit {
             case COKE:
                 this.width = mWidth / 16;
                 this.height = mHeight / 10;
-                this.fruitScore = -GameUtils.cokeScore;
+                this.fruitScore = GameUtils.cokeScore;
                 break;
             default:
                 this.isVisible = false;
