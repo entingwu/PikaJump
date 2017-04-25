@@ -65,6 +65,10 @@
         https://github.com/firebase/quickstart-android \n
         http://gamecodeschool.com/android/coding-android-sprite-sheet-animations \n
         http://stackoverflow.com \n\n
+        Test Phone 1: \n
+        LG LS740 (Android 4.4.2, API 19) \n
+        Test Phone 2: \n
+        ZTE Z831(Android 6.0.1, API 23) \n\n
         Copyright: Nintendo Co., Ltd.
     </string>
     <string name="ok_label">OK</string>
