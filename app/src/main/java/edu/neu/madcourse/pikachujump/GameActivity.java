@@ -55,7 +55,6 @@ public class GameActivity extends Activity implements SensorEventListener {
         Log.i(TAG, "Initialize Sensor Manager");
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mBuilder = new AlertDialog.Builder(this);
-        GameUtils.playMusic(this, R.raw.pika_bgm);
     }
 
     @Override
